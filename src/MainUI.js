@@ -10,19 +10,19 @@
     (function () {
         Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
 
+
         Laya.stage.alignV = Stage.ALIGN_MIDDLE;
         Laya.stage.alignH = Stage.ALIGN_CENTER;
 
         Laya.stage.scaleMode = Stage.SCALE_NOSCALE;
+//        Laya.stage.screenMode = Stage.SCREEN_NONE;
         Laya.stage.bgColor = "#232628";
-
-        showApe();
+        Stat.show();
+        init();
     })();
 
-    function showApe() {
-
+    function init() {
         var gameManager = new GameManager();
         Laya.stage.addChild(gameManager);
-
     }
 })();
