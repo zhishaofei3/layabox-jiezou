@@ -1,5 +1,6 @@
 (function () {
 
+    var BlurFilter = Laya.BlurFilter;
     var Browser = Laya.Browser;
     var Ease = Laya.Ease;
     var Event = Laya.Event;
@@ -75,8 +76,9 @@
         setInterval(function () {
             var letterBox = new UILetterBox("A");
             _this.appendOneLetter(letterBox);
+        }, 500);
 //        }, 2000);
-        }, 30);
+//        }, 30);
     }
 
     var fourRoadPosition = [
@@ -84,7 +86,7 @@
             start: {
                 x: 228,
                 y: -20,
-                skewX: -10,
+                skewX: -8,
                 scaleX: 0.6,
                 scaleY: 0.6,
                 alpha: 0
@@ -105,16 +107,16 @@
                 alpha: 0
             },
             end: {
-                x: 185,
+                x: 184,
                 y: 1300,
                 scaleX: 1.22,
                 scaleY: 1.22,
             }
         }, {
             start: {
-                x: 442,
+                x: 435,
                 y: -20,
-                skew: 2,
+                skewX: 2,
                 scaleX: 0.57,
                 scaleY: 0.57,
                 alpha: 0
@@ -151,12 +153,15 @@
 
         _.extend(letterBox, fourRoadPosition[randomIndex].start);
         roadArr[randomIndex].addChild(letterBox);
+
+//        letterBox.alpha = 1;
+
         var handler = new Handler(letterBox, function (rIndex) {
             var letterBox = screenLetterBoxArr.splice(screenLetterBoxArr.indexOf(this), 1)[0];
             roadArr[rIndex].removeChild(letterBox);
             letterBox.destroy(true);
         }, [randomIndex]);
-        var V = 200;
+        var V = 2000;
         Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearIn, handler);
         Tween.to(letterBox, {alpha: 1}, V * 0.4);
     }

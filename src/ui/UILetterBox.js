@@ -1,5 +1,6 @@
 (function () {
 
+    var BlurFilter = Laya.BlurFilter;
     var GlowFilter = Laya.GlowFilter;
     var Handler = Laya.Handler;
     var Sprite = Laya.Sprite;
@@ -23,15 +24,11 @@
     }
 
     function onAssetsLoaded(settings) {
-//        settings.colorComponent = true;
-        console.log(settings);
-        settings.colorComponentInter = true;
-//        settings.boxEmitterVelocity = true;
         sp = new Particle2D(settings);
         sp.emitter.start();
         sp.play();
         sp.x = 130;
-        sp.y = 70;
+        sp.y = 30;
         this.addChild(sp);
     }
 

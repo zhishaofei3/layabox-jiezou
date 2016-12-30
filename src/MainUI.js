@@ -9,6 +9,7 @@
 
     (function () {
         Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
+//        Laya.init(Browser.clientWidth, Browser.clientHeight);
 
 
         Laya.stage.alignV = Stage.ALIGN_MIDDLE;
