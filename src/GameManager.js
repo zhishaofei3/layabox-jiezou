@@ -76,7 +76,7 @@
             var letterBox = new UILetterBox("A");
             _this.appendOneLetter(letterBox);
 //        }, 2000);
-        }, 50);
+        }, 30);
     }
 
     var fourRoadPosition = [
@@ -156,7 +156,7 @@
             roadArr[rIndex].removeChild(letterBox);
             letterBox.destroy(true);
         }, [randomIndex]);
-        var V = 800;
+        var V = 200;
         Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearIn, handler);
         Tween.to(letterBox, {alpha: 1}, V * 0.4);
     }

@@ -17,7 +17,8 @@
         this.addLetterImg();
 //        this.addBgRect();
 
-        Laya.loader.load("res/parts/xingxing.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
+//        Laya.loader.load("res/parts/xingxing.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
+        Laya.loader.load("res/parts/lizi2.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
         this.drawShawdow();
     }
 
@@ -30,7 +31,7 @@
         sp.emitter.start();
         sp.play();
         sp.x = 130;
-        sp.y = 40;
+        sp.y = 70;
         this.addChild(sp);
     }
 
