@@ -11,12 +11,22 @@
     var letter = '';
     var sp;
 
+    var liziCon;
+    var zimuCon;
+
     function UILetterBox(letter, width) {
         UILetterBox.super(this);
 
         letter = letter;
-        this.addLetterImg();
 //        this.addBgRect();
+
+        liziCon = new Sprite();
+//        liziCon.graphics.drawRect(0,0,50,50, "#FFFF00");
+        this.addChild(liziCon);
+        zimuCon = new Sprite();
+        this.addChild(zimuCon);
+//        zimuCon.graphics.drawRect(0,0,100,100, "#FF0000");
+        this.addLetterImg();
 
 //        Laya.loader.load("res/parts/xingxing.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
         Laya.loader.load("res/parts/lizi2.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
@@ -28,8 +38,8 @@
         sp.emitter.start();
         sp.play();
         sp.x = 130;
-        sp.y = 30;
-        this.addChild(sp);
+        sp.y = 50;
+        liziCon.addChild(sp);
     }
 
     Laya.class(UILetterBox, "UILetterBox", Sprite);
@@ -38,8 +48,8 @@
 
     _proto.addLetterImg = function () {
         var imgSprite = new Sprite();
-        imgSprite.loadImage('res/jiezou/wenzi2.png');
-        this.addChild(imgSprite);
+        imgSprite.loadImage('res/imgs/wenzi2.png');
+        zimuCon.addChild(imgSprite);
     }
 
 //    _proto.addBgRect = function () {

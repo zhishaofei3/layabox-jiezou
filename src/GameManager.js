@@ -5,6 +5,7 @@
     var Ease = Laya.Ease;
     var Event = Laya.Event;
     var Handler = Laya.Handler;
+    var SoundManager = Laya.SoundManager;
     var Sprite = Laya.Sprite;
     var Keyboard = Laya.Keyboard;
     var Tween = Laya.Tween;
@@ -16,12 +17,17 @@
     var wordsArr = ['private', 'public', 'class'];//单词数组
     var screenLetterBoxArr = [];//在屏幕中的字母数组
 
+    var bgMusicChannel;//背景音乐实例
+
     function GameManager() {
         var _this = this;
         GameManager.super(_this);
 
         bgManager = new BgManager();
         this.addChild(bgManager);
+        
+        
+        
         gameContainer = new Sprite();
         gameContainer.width = 920;
         gameContainer.height = 1380;
@@ -43,9 +49,21 @@
 
     _proto.initGame = function () {
         var _this = this;
+
+//        _this.playMusic();
+
         var randomInt = _.random(0, wordsArr.length - 1);
         var wordStr = wordsArr[randomInt];
         _this.startOneWord(wordStr);
+    }
+
+    _proto.playMusic = function () {
+        SoundManager.autoStopMusic = false;
+        bgMusicChannel = SoundManager.playMusic("res/sounds/bgMusic.mp3", 0);
+    }
+
+    function onComplete() {
+        console.log("播放完成");
     }
 
     _proto.startOneWord = function (wordStr) {
@@ -76,7 +94,7 @@
         setInterval(function () {
             var letterBox = new UILetterBox("A");
             _this.appendOneLetter(letterBox);
-        }, 500);
+        }, 100);
 //        }, 2000);
 //        }, 30);
     }
@@ -161,7 +179,7 @@
             roadArr[rIndex].removeChild(letterBox);
             letterBox.destroy(true);
         }, [randomIndex]);
-        var V = 2000;
+        var V = 1000;
         Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearIn, handler);
         Tween.to(letterBox, {alpha: 1}, V * 0.4);
     }

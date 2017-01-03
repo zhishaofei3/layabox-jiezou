@@ -15,7 +15,7 @@
     _proto.initBg = function () {
         var bgContainer = new Sprite();
         this.addChild(bgContainer);
-        bgContainer.loadImage("res/jiezou/bg.png");
+        bgContainer.loadImage("res/imgs/bg.png");
     }
 
 })();

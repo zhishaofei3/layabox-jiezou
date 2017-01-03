@@ -8,15 +8,13 @@
     var Stat = Laya.Stat;
 
     (function () {
-        Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
-//        Laya.init(Browser.clientWidth, Browser.clientHeight);
-
+//        Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
+        Laya.init(Browser.clientWidth, Browser.clientHeight);
 
         Laya.stage.alignV = Stage.ALIGN_MIDDLE;
         Laya.stage.alignH = Stage.ALIGN_CENTER;
 
-        Laya.stage.scaleMode = Stage.SCALE_NOSCALE;
-//        Laya.stage.screenMode = Stage.SCREEN_NONE;
+        Laya.stage.screenMode = Stage.SCREEN_NONE;
         Laya.stage.bgColor = "#232628";
         Stat.show();
         init();
