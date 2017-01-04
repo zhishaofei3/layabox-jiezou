@@ -61,11 +61,11 @@
         this.sp.stop();
         this.sp.destroy(true);
         this.sp = null;
-        while(this.liziCon.numChildren) {
+        while (this.liziCon.numChildren) {
             this.liziCon.removeChildAt(0);
         }
         this.liziCon = null;
-        while(this.zimuCon.numChildren) {
+        while (this.zimuCon.numChildren) {
             this.zimuCon.removeChildAt(0);
         }
         this.zimuCon = null;
@@ -99,7 +99,7 @@
         console.log('字母' + this.letter + ' 得分' + score);
 
         var color = "#FF0000";
-        if(score == 5) {
+        if (score == 5) {
             color = '#0000FF';
         } else if (score == 10) {
             color = '#FFFF00';

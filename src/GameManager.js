@@ -143,9 +143,9 @@
     _proto.onKeyDown = function (e) {
         var keyDownLetter = String.fromCharCode(e.keyCode);
         var letter;
-        for(var i = 0; i < screenLetterBoxArr.length; i++) {
+        for (var i = 0; i < screenLetterBoxArr.length; i++) {
             letter = screenLetterBoxArr[i];
-            if(letter.letter == keyDownLetter && letter.isOver == false) {
+            if (letter.letter == keyDownLetter && letter.isOver == false) {
                 if (letter.y < 980) {
                     letter.xiaoshi();
                     break;

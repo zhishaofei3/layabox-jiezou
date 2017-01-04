@@ -20,7 +20,6 @@
         scorePanel.loadImage("res/imgs/BG_01.png");
         _this.addChild(scorePanel);
     }
-    
-    
+
 
 })();
