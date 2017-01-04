@@ -10,8 +10,12 @@
     var Keyboard = Laya.Keyboard;
     var Tween = Laya.Tween;
 
-    var bgManager;//背景管理
+    var bgManager;//游戏主背景
+    var scoreManager;//分数容器
     var gameContainer;//游戏容器
+    var gamePanel;//游戏区容器
+    var gameBgPanel;//游戏区背景
+    var bottomManager;//底部容器
     var roadArr = [];//四条路数组
 
     var wordsArr = ['private', 'public', 'class'];//单词数组
@@ -25,19 +29,27 @@
 
         bgManager = new BgManager();
         this.addChild(bgManager);
-        
-        
-        
-        gameContainer = new Sprite();
-        gameContainer.width = 920;
-        gameContainer.height = 1380;
-//        gameContainer.graphics.drawRect(0, 0, 920, 1380, "#FF0000");
-        gameContainer.x = 78;
-        gameContainer.y = 230;
 
-//        gameContainer.skewX = 50;
-//        gameContainer.skewY = 4;
+        gameContainer = new Sprite();
+        gameContainer.y = 315;
         this.addChild(gameContainer);
+
+        gameBgPanel = new Sprite();//游戏区背景
+        gameBgPanel.loadImage("res/imgs/BG_02.png");
+        gamePanel = new Sprite();
+        gamePanel.width = 920;
+        gamePanel.height = 1321;
+        gamePanel.x = 78;
+
+        gameContainer.addChild(gameBgPanel);
+        gameContainer.addChild(gamePanel);
+
+        scoreManager = new ScoreManager();
+        this.addChild(scoreManager);
+
+        bottomManager = new BottomManager();
+        bottomManager.y = 1636;
+        this.addChild(bottomManager);
 
         _this.initGame();
         _this.addEvents();
@@ -66,6 +78,7 @@
         console.log("播放完成");
     }
 
+    var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     _proto.startOneWord = function (wordStr) {
         var _this = this;
         var wordLen = wordStr.length;
@@ -77,12 +90,9 @@
             var oneRoadSprite = new Sprite();
             oneRoadSprite.width = 920;
             oneRoadSprite.height = 1380;
-//            oneRoadSprite.graphics.drawRect(0, 0, 920, 1392, getRandomColor());
-//            oneRoadSprite.graphics.drawRect(0, 0, 920, 1392);
-//            oneRoadSprite.alpha = 0.5;
 
             roadArr.push(oneRoadSprite);
-            gameContainer.addChild(oneRoadSprite);
+            gamePanel.addChild(oneRoadSprite);
         }
 
 //        for (var j = 0; j < ROAD_LEN; j++) {
@@ -92,96 +102,35 @@
 //        }
 
         setInterval(function () {
-            var letterBox = new UILetterBox("A");
+            var letterBox = new UILetterBox(str[parseInt(str.length * Math.random())]);
             _this.appendOneLetter(letterBox);
-        }, 100);
-//        }, 2000);
-//        }, 30);
+        }, 1000);
     }
 
-    var fourRoadPosition = [
-        {
-            start: {
-                x: 228,
-                y: -20,
-                skewX: -8,
-                scaleX: 0.6,
-                scaleY: 0.6,
-                alpha: 0
-            },
-            end: {
-                x: -43,
-                y: 1300,
-                scaleX: 1.2,
-                scaleY: 1.2,
-            }
-        }, {
-            start: {
-                x: 330,
-                y: -20,
-                skewX: -2,
-                scaleX: 0.57,
-                scaleY: 0.57,
-                alpha: 0
-            },
-            end: {
-                x: 184,
-                y: 1300,
-                scaleX: 1.22,
-                scaleY: 1.22,
-            }
-        }, {
-            start: {
-                x: 435,
-                y: -20,
-                skewX: 2,
-                scaleX: 0.57,
-                scaleY: 0.57,
-                alpha: 0
-            },
-            end: {
-                x: 424,
-                y: 1300,
-                scaleX: 1.22,
-                scaleY: 1.22,
-            }
-        }, {
-            start: {
-                x: 542,
-                y: -20,
-                skewX: 7,
-                scaleX: 0.55,
-                scaleY: 0.55,
-                alpha: 0
-            },
-            end: {
-                x: 655,
-                y: 1300,
-                scaleX: 1.2,
-                scaleY: 1.2
-            }
-        }
-    ];
-
     _proto.appendOneLetter = function (letterBox) {
+        var _this = this;
         screenLetterBoxArr.push(letterBox);
 
         var randomIndex = _.random(0, 3);
-//        randomIndex = 1
-
+        letterBox.guidao = randomIndex;
         _.extend(letterBox, fourRoadPosition[randomIndex].start);
         roadArr[randomIndex].addChild(letterBox);
 
-//        letterBox.alpha = 1;
+        var handler = new Handler(letterBox, function () {
+            _this.removeLetter(this);
+        });
+        var V = 10000;
+        letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
+        letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
-        var handler = new Handler(letterBox, function (rIndex) {
-            var letterBox = screenLetterBoxArr.splice(screenLetterBoxArr.indexOf(this), 1)[0];
-            roadArr[rIndex].removeChild(letterBox);
-            letterBox.destroy(true);
-        }, [randomIndex]);
-        var V = 1000;
-        Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearIn, handler);
-        Tween.to(letterBox, {alpha: 1}, V * 0.4);
+        letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
+    }
+
+    _proto.removeLetter = function (letter) {
+        var letterBox = screenLetterBoxArr.splice(screenLetterBoxArr.indexOf(letter), 1)[0];
+        letterBox.destroyMe();
+        letterBox.removeSelf();
+        letterBox.destroy(true);
     }
 
     _proto.addEvents = function () {
@@ -189,11 +138,52 @@
         Laya.stage.on(Event.KEY_DOWN, this, function (e) {
             _this.onKeyDown(e);
         });
+
+        Laya.timer.frameLoop(2, this, function () {
+            for(var i = 0; i < screenLetterBoxArr.length; i++) {
+                var letter = screenLetterBoxArr[i];
+
+//                if (letter.y > 1140 && letter.isOver == false) {
+//                    letter.xiaoshi();
+//                    break;
+//                }
+
+                if (letter.y < 980 && letter.isOver == false) {
+                    letter.xiaoshi();
+                    break;
+                } else if (letter.y >= 980 && letter.y < 1042 && letter.isOver == false) {
+                    letter.pipei(5);
+                    break;
+                } else if (letter.y >= 1042 && letter.y < 1090 && letter.isOver == false) {
+                    letter.pipei(10);
+                    break;
+                } else if (letter.y >= 1090 && letter.y < 1140 && letter.isOver == false) {
+                    letter.pipei(20);
+                    break;
+                }
+
+//                if(letter.y < 980 && letter.isOver == false) {
+//                    letter.xiaoshi();
+//                    break;
+//                } else if(letter.y >= 980 && letter.isOver == false) {
+//                    console.log('选中了');
+//                    letter.choose();
+//                    break;
+//                }
+            }
+
+        });
     }
 
     _proto.onKeyDown = function (e) {
-//        console.log(e.keyCode === Keyboard['A']);
+        var keyDownLetter = String.fromCharCode(e.keyCode);
+        for(var i = 0; i < screenLetterBoxArr.length; i++) {
+            var letter = screenLetterBoxArr[i];
+            if(letter.letter == keyDownLetter && letter.isOver == false) {
+                letter.choose();
+                break;
+            }
+        }
     }
-
 
 })();
