@@ -1,5 +1,6 @@
 (function () {
 
+    var Animation = Laya.Animation;
     var BlurFilter = Laya.BlurFilter;
     var GlowFilter = Laya.GlowFilter;
     var Handler = Laya.Handler;
@@ -91,6 +92,35 @@
         }));
     }
 
+    _proto.pipei = function (score) {
+        var _this = this;
+
+        console.log('有y ' + this.y);
+        console.log('字母' + this.letter + ' 得分' + score);
+
+        var color = "#FF0000";
+        if(score == 5) {
+            color = '#0000FF';
+        } else if (score == 10) {
+            color = '#FFFF00';
+        } else if (score == 20) {
+            color = '#00FF00';
+        }
+
+        var ani = new Animation();
+        ani.loadAtlas('res/mc/assets.json'); // 加载图集动画
+        ani.interval = 30;			// 设置播放间隔（单位：毫秒）
+        ani.index = 1; 				// 当前播放索引
+        ani.play(); 				// 播放图集动画
+        ani.x = -120;
+        ani.y = -170;
+        ani.scaleX = 1.6;
+        ani.scaleY = 1.6;
+        _this.addChild(ani);
+
+        _this.zimuCon.graphics.drawRect(0, 0, 468, 352, color);
+        _this.xiaoshi();
+    }
 
 
 })();

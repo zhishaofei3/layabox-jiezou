@@ -104,7 +104,7 @@
         setInterval(function () {
             var letterBox = new UILetterBox(str[parseInt(str.length * Math.random())]);
             _this.appendOneLetter(letterBox);
-        }, 1000);
+        }, 600);
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -119,7 +119,7 @@
         var handler = new Handler(letterBox, function () {
             _this.removeLetter(this);
         });
-        var V = 10000;
+        var V = 3000;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
@@ -138,50 +138,35 @@
         Laya.stage.on(Event.KEY_DOWN, this, function (e) {
             _this.onKeyDown(e);
         });
-
-        Laya.timer.frameLoop(2, this, function () {
-            for(var i = 0; i < screenLetterBoxArr.length; i++) {
-                var letter = screenLetterBoxArr[i];
-
-//                if (letter.y > 1140 && letter.isOver == false) {
-//                    letter.xiaoshi();
-//                    break;
-//                }
-
-                if (letter.y < 980 && letter.isOver == false) {
-                    letter.xiaoshi();
-                    break;
-                } else if (letter.y >= 980 && letter.y < 1042 && letter.isOver == false) {
-                    letter.pipei(5);
-                    break;
-                } else if (letter.y >= 1042 && letter.y < 1090 && letter.isOver == false) {
-                    letter.pipei(10);
-                    break;
-                } else if (letter.y >= 1090 && letter.y < 1140 && letter.isOver == false) {
-                    letter.pipei(20);
-                    break;
-                }
-
-//                if(letter.y < 980 && letter.isOver == false) {
-//                    letter.xiaoshi();
-//                    break;
-//                } else if(letter.y >= 980 && letter.isOver == false) {
-//                    console.log('选中了');
-//                    letter.choose();
-//                    break;
-//                }
-            }
-
-        });
     }
 
     _proto.onKeyDown = function (e) {
         var keyDownLetter = String.fromCharCode(e.keyCode);
+        var letter;
         for(var i = 0; i < screenLetterBoxArr.length; i++) {
-            var letter = screenLetterBoxArr[i];
+            letter = screenLetterBoxArr[i];
             if(letter.letter == keyDownLetter && letter.isOver == false) {
-                letter.choose();
-                break;
+                if (letter.y < 980) {
+                    letter.xiaoshi();
+                    break;
+                } else if (letter.y >= 980 && letter.y < 1042) {
+                    letter.pipei(5);
+                    break;
+                } else if (letter.y >= 1042 && letter.y < 1090) {
+                    letter.pipei(10);
+                    break;
+                } else if (letter.y >= 1090 && letter.y < 1140) {
+                    letter.pipei(20);
+                    break;
+                } else if (letter.y >= 1140 && letter.y < 1235) {
+                    letter.pipei(10);
+                    break;
+                } else if (letter.y >= 1235 && letter.y < 1280) {
+                    letter.pipei(5);
+                    break;
+                } else {
+                    console.log('不在范围里 ' + letter.y);
+                }
             }
         }
     }

@@ -24,10 +24,18 @@
     })();
 
     function init() {
-        var gameManager = new GameManager();
-        Laya.stage.addChild(gameManager);
+
+        var res = [];
+        res.push({url: "res/mc/assets.json", type: Loader.ATLAS});
+        res.push({url: "res/mc/assets.png", type: Loader.IMAGE});
+        Laya.loader.load(res, Handler.create(this, onComplete));
 
 //        Laya.loader.load("res/parts/lizi2.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
+    }
+
+    function onComplete() {
+        var gameManager = new GameManager();
+        Laya.stage.addChild(gameManager);
     }
 
     var i = 0;
