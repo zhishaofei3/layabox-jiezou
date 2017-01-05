@@ -91,11 +91,24 @@
         }));
     }
 
+    _proto.setStatus = function (status) {
+        this.wordObj.status = status;
+    }
+
+    _proto.bupipei = function (score) {
+        var _this = this;
+        _this.wordObj.status = -1;
+        _this.xiaoshi();
+    }
+
     _proto.pipei = function (score) {
         var _this = this;
 
-        console.log('有y ' + this.y);
-        console.log('字母' + this.wordObj.letter + ' 得分' + score);
+//        console.log(_this.wordObj);
+        _this.wordObj.status = 1;
+
+//        console.log('有y ' + this.y);
+//        console.log('字母' + this.wordObj.letter + ' 得分' + score);
 
         var color = "#FF0000";
         if (score == 5) {

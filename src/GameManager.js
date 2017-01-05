@@ -19,16 +19,19 @@
     var roadArr = [];//四条路数组
 
     var wordsArr = [
-        'SAY HELLO JD FOR TWO SECS',
-        'CHANGE FONTSIZE BY TEN',
-        'SET COLOR TO GREEN'
+        'PRINT HELLO NEW YEAR',
+        'ECHO HAPPY EVERY DAY',
+        'ALERT END'
     ];//单词数组
-    var wordsObjArr = [];
-    var showWordsObjArr = [];
+    var letterObjArr = [];
+    var showLetterObjArr = [];
+    var currLetter = {};//当前字母
 
     var screenLetterBoxArr = [];//在屏幕中的字母数组
 
     var bgMusicChannel;//背景音乐实例
+
+    var i = 0, j = 0;//数组下标
 
     function GameManager() {
         var _this = this;
@@ -76,15 +79,16 @@
             for(var j = 0; j < line.length; j++) {
                 linArr.push({letter: line[j], status: 0, position: [i, j]});
             }
-            wordsObjArr.push(linArr);
+            letterObjArr.push(linArr);
         }
     }
 
     _proto.initGame = function () {
         var _this = this;
 
-//        _this.playMusic();
+        _this.playMusic();
         _this.startWordArr();
+        bottomManager.startGame();
     }
 
     _proto.playMusic = function () {
@@ -106,31 +110,30 @@
             gamePanel.addChild(oneRoadSprite);
         }
 
-        //按wordsObjArr输出
-        var i = 0;
-        var j = 0;
+        //按letterObjArr输出
+        i = 0;
+        j = 0;
 
-        var letter;
         var intervalId = setInterval(function () {
             do {
-                if (!letter) {
+                if (!currLetter) {
                     i++;
                     j = 0;
                 }
-                if (wordsObjArr[i]) {
-                    letter = wordsObjArr[i][j++];
+                if (letterObjArr[i]) {
+                    currLetter = letterObjArr[i][j++];
                 } else {
-                    console.log('全部结束');
+                    var lastLine = letterObjArr[letterObjArr.length - 1];
+                    currLetter = lastLine[lastLine.length - 1];
                     clearInterval(intervalId);
-                    break;
+                    return;
                 }
-            } while (!letter || letter.letter == " ");
+            } while (!currLetter || currLetter.letter == " ");
 
-            if(letter) {
-                var letterBox = new UILetterBox(letter);
-                _this.appendOneLetter(letterBox);
-            }
-        }, 600);
+            var letterBox = new UILetterBox(currLetter);
+            _this.appendOneLetter(letterBox);
+            bottomManager.outputLetterArr(letterObjArr, currLetter.position);
+        }, 1000);
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -143,14 +146,19 @@
         roadArr[randomIndex].addChild(letterBox);
 
         var handler = new Handler(letterBox, function () {
+            this.setStatus(-1);
+            if(currLetter) {
+                bottomManager.outputLetterArr(letterObjArr, currLetter.position);
+            }
             _this.removeLetter(this);
         });
-        var V = 3000;
+        var V = 4000;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
         letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
-        bottomManager.addLetterStr(letterBox.letter, true);
+//        letterBox.wordBreak
+//        bottomManager.addLetterStr(letterBox.letter, true);
     }
 
     _proto.removeLetter = function (letter) {
@@ -172,9 +180,9 @@
         var letter;
         for (var i = 0; i < screenLetterBoxArr.length; i++) {
             letter = screenLetterBoxArr[i];
-            if (letter.letter == keyDownLetter && letter.isOver == false) {
+            if (letter.wordObj.letter == keyDownLetter && letter.isOver == false) {
                 if (letter.y < 980) {
-                    letter.xiaoshi();
+                    letter.bupipei();
                     break;
                 } else if (letter.y >= 980 && letter.y < 1042) {
                     letter.pipei(5);
@@ -201,6 +209,8 @@
                 }
             }
         }
-
+        if (currLetter) {
+            bottomManager.outputLetterArr(letterObjArr, currLetter.position);
+        }
     }
 })();
