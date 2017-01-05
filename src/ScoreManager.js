@@ -21,5 +21,8 @@
         _this.addChild(scorePanel);
     }
 
+    _proto.addScore = function (score) {
+        
+    }
 
 })();

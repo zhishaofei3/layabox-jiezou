@@ -9,11 +9,10 @@
     var Particle2D = Laya.Particle2D;
     var Tween = Laya.Tween;
 
-
-    function UILetterBox(letter) {
+    function UILetterBox(wordObj) {
         UILetterBox.super(this);
 
-        this.letter = letter.toUpperCase();
+        this.wordObj = wordObj;
         this.isOver = false;//是否已经排除
 
         this.bgCon = new Sprite();
@@ -50,7 +49,7 @@
 
     _proto.addLetterImg = function () {
         var imgSprite = new Sprite();
-        imgSprite.loadImage('res/imgs/' + this.letter + '.png');
+        imgSprite.loadImage('res/imgs/' + this.wordObj.letter + '.png');
         imgSprite.scaleX = 0.45;
         imgSprite.scaleY = 0.45;
         imgSprite.x = 24;
@@ -96,7 +95,7 @@
         var _this = this;
 
         console.log('有y ' + this.y);
-        console.log('字母' + this.letter + ' 得分' + score);
+        console.log('字母' + this.wordObj.letter + ' 得分' + score);
 
         var color = "#FF0000";
         if (score == 5) {

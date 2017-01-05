@@ -18,7 +18,14 @@
     var bottomManager;//底部容器
     var roadArr = [];//四条路数组
 
-    var wordsArr = ['private', 'public', 'class'];//单词数组
+    var wordsArr = [
+        'SAY HELLO JD FOR TWO SECS',
+        'CHANGE FONTSIZE BY TEN',
+        'SET COLOR TO GREEN'
+    ];//单词数组
+    var wordsObjArr = [];
+    var showWordsObjArr = [];
+
     var screenLetterBoxArr = [];//在屏幕中的字母数组
 
     var bgMusicChannel;//背景音乐实例
@@ -49,6 +56,9 @@
 
         bottomManager = new BottomManager();
         bottomManager.y = 1636;
+
+        this.initLetterObjArr();
+
         this.addChild(bottomManager);
 
         _this.initGame();
@@ -59,14 +69,22 @@
 
     var _proto = GameManager.prototype;
 
+    _proto.initLetterObjArr = function () {
+        for(var i = 0; i < wordsArr.length; i++) {
+            var linArr = [];
+            var line = wordsArr[i];
+            for(var j = 0; j < line.length; j++) {
+                linArr.push({letter: line[j], status: 0, position: [i, j]});
+            }
+            wordsObjArr.push(linArr);
+        }
+    }
+
     _proto.initGame = function () {
         var _this = this;
 
 //        _this.playMusic();
-
-        var randomInt = _.random(0, wordsArr.length - 1);
-        var wordStr = wordsArr[randomInt];
-        _this.startOneWord(wordStr);
+        _this.startWordArr();
     }
 
     _proto.playMusic = function () {
@@ -74,18 +92,11 @@
         bgMusicChannel = SoundManager.playMusic("res/sounds/bgMusic.mp3", 0);
     }
 
-    function onComplete() {
-        console.log("播放完成");
-    }
-
-    var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    _proto.startOneWord = function (wordStr) {
+    _proto.startWordArr = function () {
         var _this = this;
-        var wordLen = wordStr.length;
         var ROAD_LEN = 4;
 
         roadArr = [];
-
         for (var i = 0; i < ROAD_LEN; i++) {
             var oneRoadSprite = new Sprite();
             oneRoadSprite.width = 920;
@@ -95,15 +106,30 @@
             gamePanel.addChild(oneRoadSprite);
         }
 
-//        for (var j = 0; j < ROAD_LEN; j++) {
-//            var letter = wordStr[j];
-//            var letterBox = new UILetterBox(letter);
-//            _this.appendOneLetter(letterBox);
-//        }
+        //按wordsObjArr输出
+        var i = 0;
+        var j = 0;
 
-        setInterval(function () {
-            var letterBox = new UILetterBox(str[parseInt(str.length * Math.random())]);
-            _this.appendOneLetter(letterBox);
+        var letter;
+        var intervalId = setInterval(function () {
+            do {
+                if (!letter) {
+                    i++;
+                    j = 0;
+                }
+                if (wordsObjArr[i]) {
+                    letter = wordsObjArr[i][j++];
+                } else {
+                    console.log('全部结束');
+                    clearInterval(intervalId);
+                    break;
+                }
+            } while (!letter || letter.letter == " ");
+
+            if(letter) {
+                var letterBox = new UILetterBox(letter);
+                _this.appendOneLetter(letterBox);
+            }
         }, 600);
     }
 
@@ -124,6 +150,7 @@
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
         letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
+        bottomManager.addLetterStr(letterBox.letter, true);
     }
 
     _proto.removeLetter = function (letter) {
@@ -151,24 +178,29 @@
                     break;
                 } else if (letter.y >= 980 && letter.y < 1042) {
                     letter.pipei(5);
+                    scoreManager.addScore(5);
                     break;
                 } else if (letter.y >= 1042 && letter.y < 1090) {
                     letter.pipei(10);
+                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1090 && letter.y < 1140) {
                     letter.pipei(20);
+                    scoreManager.addScore(20);
                     break;
                 } else if (letter.y >= 1140 && letter.y < 1235) {
                     letter.pipei(10);
+                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1235 && letter.y < 1280) {
                     letter.pipei(5);
+                    scoreManager.addScore(5);
                     break;
                 } else {
                     console.log('不在范围里 ' + letter.y);
                 }
             }
         }
-    }
 
+    }
 })();
