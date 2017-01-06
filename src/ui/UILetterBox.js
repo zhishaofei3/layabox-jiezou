@@ -1,8 +1,6 @@
 (function () {
 
     var Animation = Laya.Animation;
-    var BlurFilter = Laya.BlurFilter;
-    var GlowFilter = Laya.GlowFilter;
     var Handler = Laya.Handler;
     var Sprite = Laya.Sprite;
     var Loader = Laya.Loader;

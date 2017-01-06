@@ -16,6 +16,7 @@
     var gamePanel;//游戏区容器
     var gameBgPanel;//游戏区背景
     var bottomManager;//底部容器
+    var tipsManager;//提示容器（层级最高）
     var roadArr = [];//四条路数组
     var pressBgArr = [];//四个按键闪光数组
 
@@ -62,8 +63,10 @@
         bottomManager.y = 1636;
 
         this.initLetterObjArr();
-
         this.addChild(bottomManager);
+
+        tipsManager = new TipsManager();
+        this.addChild(tipsManager);
 
         _this.initGame();
         _this.addEvents();
@@ -87,7 +90,7 @@
     _proto.initGame = function () {
         var _this = this;
 
-//        _this.playMusic();
+        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
@@ -142,7 +145,7 @@
             var letterBox = new UILetterBox(currLetter);
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, 1000);
+        }, 6000);
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -150,19 +153,47 @@
         screenLetterBoxArr.push(letterBox);
 
         var randomIndex = _.random(0, 3);
+        randomIndex = 0;
         letterBox.guidao = randomIndex;
         _.extend(letterBox, fourRoadPosition[randomIndex].start);
         roadArr[randomIndex].addChild(letterBox);
 
         var handler = new Handler(letterBox, function () {
             this.setStatus(-1);
+            tipsManager.showPlayTip(0);
             if (currLetter) {
                 bottomManager.outputLetterArr(letterObjArr, currLetter.position);
             }
             _this.removeLetter(this);
         });
-        var V = 4000;
+
+        var moveUpdateHandler = new Handler(letterBox, function () {
+            var pressBg = pressBgArr[this.guidao];
+            var oneRoad = roadArr[this.guidao];
+            var isPeng = false;
+
+            for (var i = 0; i < oneRoad.numChildren; i++) {
+                var letter = oneRoad.getChildAt(i);
+                if (letter instanceof UILetterBox) {
+                    if (letter.y >= 980 && letter.y < 1280) {
+                        isPeng = true;
+                        break;
+                    } else {
+                        isPeng = false;
+                    }
+                }
+            }
+            if (isPeng) {
+                pressBg.alpha = 1;
+            } else {
+                pressBg.alpha = 0;
+            }
+        });
+
+        var V = 10000;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
+        letterBox.moveTween.update = moveUpdateHandler;
+
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
         letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
@@ -219,15 +250,11 @@
 
     _proto.onKeyDownLetter = function (letter, isPipei, score) {
         if (isPipei) {
-            var pressBg = pressBgArr[letter.guidao];
-            var handler = new Handler(pressBg, function () {
-                Tween.to(pressBg, {alpha: 0}, 200, null, null, 300);
-            });
-            Tween.clearAll(pressBg);
-            Tween.to(pressBg, {alpha: 1}, 100, null, handler);
+            tipsManager.showPlayTip(score);
             letter.pipei(score);
             scoreManager.addScore(score);
         } else {
+            tipsManager.showPlayTip(0);
             letter.bupipei();
         }
     }
