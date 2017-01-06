@@ -28,6 +28,7 @@
     var letterObjArr = [];
     var showLetterObjArr = [];
     var currLetter = {};//当前字母
+    var moveUpdateHandler;//移动到下面方块 亮句柄函数
 
     var screenLetterBoxArr = [];//在屏幕中的字母数组
 
@@ -89,7 +90,12 @@
 
     _proto.initGame = function () {
         var _this = this;
+        tipsManager.readyGO();
+        tipsManager.on("Start_Game_Event", _this, _this.startGame);
+    }
 
+    _proto.startGame = function () {
+        var _this = this;
         _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
@@ -109,6 +115,7 @@
             var oneRoadSprite = new Sprite();
             oneRoadSprite.width = 920;
             oneRoadSprite.height = 1380;
+            oneRoadSprite.name = 'road' + i;
 
             var pressBg = new Sprite();
             pressBg.loadImage("res/imgs/pressBg.png");
@@ -116,6 +123,7 @@
 
             _.extend(pressBg, roadPressPosition[i]);
             pressBg.alpha = 0;
+            pressBg.name = 'pressBg' + i;
 
             pressBgArr.push(pressBg);
             roadArr.push(oneRoadSprite);
@@ -143,9 +151,10 @@
             } while (!currLetter || currLetter.letter == " ");
 
             var letterBox = new UILetterBox(currLetter);
+            letterBox.name = 'x' + getRandomColor();
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, 6000);
+        }, 1000);
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -154,6 +163,7 @@
 
         var randomIndex = _.random(0, 3);
         letterBox.guidao = randomIndex;
+
         _.extend(letterBox, fourRoadPosition[randomIndex].start);
         roadArr[randomIndex].addChild(letterBox);
 
@@ -166,14 +176,14 @@
             _this.removeLetter(this);
         });
 
-        var moveUpdateHandler = new Handler(letterBox, function () {
+        moveUpdateHandler = new Handler(letterBox, function () {
             var pressBg = pressBgArr[this.guidao];
             var oneRoad = roadArr[this.guidao];
             var isPeng = false;
 
             for (var i = 0; i < oneRoad.numChildren; i++) {
                 var letter = oneRoad.getChildAt(i);
-                if (letter instanceof UILetterBox) {
+                if (letter instanceof UILetterBox && letter.isOver == false) {
                     if (letter.y >= 980 && letter.y < 1280) {
                         isPeng = true;
                         break;
@@ -189,7 +199,7 @@
             }
         });
 
-        var V = 10000;
+        var V = 1000;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
         letterBox.moveTween.update = moveUpdateHandler;
 
@@ -240,6 +250,7 @@
                 } else {
                     console.log('不在范围里 ' + letter.y);
                 }
+                break;
             }
         }
         if (currLetter) {
@@ -252,6 +263,7 @@
             tipsManager.showPlayTip(score);
             letter.pipei(score);
             scoreManager.addScore(score);
+            moveUpdateHandler.runWith(true);
         } else {
             tipsManager.showPlayTip(0);
             letter.bupipei();
