@@ -166,8 +166,6 @@
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
         letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
-//        letterBox.wordBreak
-//        bottomManager.addLetterStr(letterBox.letter, true);
     }
 
     _proto.removeLetter = function (letter) {
