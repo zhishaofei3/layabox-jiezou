@@ -193,32 +193,21 @@
             if (letter.wordObj.letter == keyDownLetter && letter.isOver == false) {
                 if (letter.y < 980) {
                     _this.onKeyDownLetter(letter, false);
-//                    letter.bupipei();
                     break;
                 } else if (letter.y >= 980 && letter.y < 1042) {
                     _this.onKeyDownLetter(letter, true, 5);
-//                    letter.pipei(5);
-//                    scoreManager.addScore(5);
                     break;
                 } else if (letter.y >= 1042 && letter.y < 1090) {
                     _this.onKeyDownLetter(letter, true, 10);
-//                    letter.pipei(10);
-//                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1090 && letter.y < 1140) {
                     _this.onKeyDownLetter(letter, true, 20);
-//                    letter.pipei(20);
-//                    scoreManager.addScore(20);
                     break;
                 } else if (letter.y >= 1140 && letter.y < 1235) {
                     _this.onKeyDownLetter(letter, true, 10);
-//                    letter.pipei(10);
-//                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1235 && letter.y < 1280) {
                     _this.onKeyDownLetter(letter, true, 5);
-//                    letter.pipei(5);
-//                    scoreManager.addScore(5);
                     break;
                 } else {
                     console.log('不在范围里 ' + letter.y);
