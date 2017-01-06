@@ -39,6 +39,7 @@
     }
 
     var i = 0;
+
     function onAssetsLoaded(settings) {
         var sp = new Particle2D(settings);
         sp.play();

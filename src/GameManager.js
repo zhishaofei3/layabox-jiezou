@@ -74,10 +74,10 @@
     var _proto = GameManager.prototype;
 
     _proto.initLetterObjArr = function () {
-        for(var i = 0; i < wordsArr.length; i++) {
+        for (var i = 0; i < wordsArr.length; i++) {
             var linArr = [];
             var line = wordsArr[i];
-            for(var j = 0; j < line.length; j++) {
+            for (var j = 0; j < line.length; j++) {
                 linArr.push({letter: line[j], status: 0, position: [i, j]});
             }
             letterObjArr.push(linArr);
@@ -156,7 +156,7 @@
 
         var handler = new Handler(letterBox, function () {
             this.setStatus(-1);
-            if(currLetter) {
+            if (currLetter) {
                 bottomManager.outputLetterArr(letterObjArr, currLetter.position);
             }
             _this.removeLetter(this);
@@ -218,7 +218,7 @@
     }
 
     _proto.onKeyDownLetter = function (letter, isPipei, score) {
-        if(isPipei) {
+        if (isPipei) {
             var pressBg = pressBgArr[letter.guidao];
             var handler = new Handler(pressBg, function () {
                 Tween.to(pressBg, {alpha: 0}, 200, null, null, 300);

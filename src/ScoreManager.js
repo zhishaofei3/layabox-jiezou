@@ -22,7 +22,7 @@
     }
 
     _proto.addScore = function (score) {
-        
+
     }
 
 })();
