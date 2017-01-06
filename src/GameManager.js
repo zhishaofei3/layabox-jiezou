@@ -153,7 +153,6 @@
         screenLetterBoxArr.push(letterBox);
 
         var randomIndex = _.random(0, 3);
-        randomIndex = 0;
         letterBox.guidao = randomIndex;
         _.extend(letterBox, fourRoadPosition[randomIndex].start);
         roadArr[randomIndex].addChild(letterBox);
