@@ -61,3 +61,34 @@ var fourRoadPosition = [
         }
     }
 ];
+
+var roadPressPosition = [
+    {
+        x: 43,
+        y: 1125,
+        skewX: -6.5,
+        scaleX: 0.84,
+        scaleY: 0.79
+    },
+    {
+        x: 250,
+        y: 1125,
+        skewX: -3.0,
+        scaleX: 0.92,
+        scaleY: 0.79
+    },
+    {
+        x: 475,
+        y: 1125,
+        skewX: 1.5,
+        scaleX: 0.92,
+        scaleY: 0.79
+    },
+    {
+        x: 696,
+        y: 1125,
+        skewX: 6.4,
+        scaleX: 0.86,
+        scaleY: 0.79
+    }
+]

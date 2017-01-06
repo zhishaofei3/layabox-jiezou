@@ -130,7 +130,7 @@
         ani.scaleY = 1.6;
         _this.addChild(ani);
 
-        _this.zimuCon.graphics.drawRect(0, 0, 468, 352, color);
+//        _this.zimuCon.graphics.drawRect(0, 0, 468, 352, color);
         _this.xiaoshi();
     }
 

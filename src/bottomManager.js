@@ -1,7 +1,7 @@
 (function () {
 
     var Sprite = Laya.Sprite;
-
+    var GlowFilter = Laya.GlowFilter;
     var bottomBgPanel;//分数区容器
     var HTMLDivElement = Laya.HTMLDivElement;
 
@@ -99,6 +99,7 @@
             htmlStr += '<span style="color: #00f8b0;">_</span>';
         }
         bottomHTMLTxt.innerHTML = htmlStr;
+
     }
 
 })();

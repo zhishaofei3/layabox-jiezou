@@ -17,6 +17,7 @@
     var gameBgPanel;//游戏区背景
     var bottomManager;//底部容器
     var roadArr = [];//四条路数组
+    var pressBgArr = [];//四个按键闪光数组
 
     var wordsArr = [
         'PRINT HELLO NEW YEAR',
@@ -86,7 +87,7 @@
     _proto.initGame = function () {
         var _this = this;
 
-        _this.playMusic();
+//        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
@@ -106,6 +107,14 @@
             oneRoadSprite.width = 920;
             oneRoadSprite.height = 1380;
 
+            var pressBg = new Sprite();
+            pressBg.loadImage("res/imgs/pressBg.png");
+            oneRoadSprite.addChild(pressBg);
+
+            _.extend(pressBg, roadPressPosition[i]);
+            pressBg.alpha = 0;
+
+            pressBgArr.push(pressBg);
             roadArr.push(oneRoadSprite);
             gamePanel.addChild(oneRoadSprite);
         }
@@ -176,33 +185,40 @@
     }
 
     _proto.onKeyDown = function (e) {
+        var _this = this;
         var keyDownLetter = String.fromCharCode(e.keyCode);
         var letter;
         for (var i = 0; i < screenLetterBoxArr.length; i++) {
             letter = screenLetterBoxArr[i];
             if (letter.wordObj.letter == keyDownLetter && letter.isOver == false) {
                 if (letter.y < 980) {
-                    letter.bupipei();
+                    _this.onKeyDownLetter(letter, false);
+//                    letter.bupipei();
                     break;
                 } else if (letter.y >= 980 && letter.y < 1042) {
-                    letter.pipei(5);
-                    scoreManager.addScore(5);
+                    _this.onKeyDownLetter(letter, true, 5);
+//                    letter.pipei(5);
+//                    scoreManager.addScore(5);
                     break;
                 } else if (letter.y >= 1042 && letter.y < 1090) {
-                    letter.pipei(10);
-                    scoreManager.addScore(10);
+                    _this.onKeyDownLetter(letter, true, 10);
+//                    letter.pipei(10);
+//                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1090 && letter.y < 1140) {
-                    letter.pipei(20);
-                    scoreManager.addScore(20);
+                    _this.onKeyDownLetter(letter, true, 20);
+//                    letter.pipei(20);
+//                    scoreManager.addScore(20);
                     break;
                 } else if (letter.y >= 1140 && letter.y < 1235) {
-                    letter.pipei(10);
-                    scoreManager.addScore(10);
+                    _this.onKeyDownLetter(letter, true, 10);
+//                    letter.pipei(10);
+//                    scoreManager.addScore(10);
                     break;
                 } else if (letter.y >= 1235 && letter.y < 1280) {
-                    letter.pipei(5);
-                    scoreManager.addScore(5);
+                    _this.onKeyDownLetter(letter, true, 5);
+//                    letter.pipei(5);
+//                    scoreManager.addScore(5);
                     break;
                 } else {
                     console.log('不在范围里 ' + letter.y);
@@ -213,4 +229,20 @@
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
         }
     }
+
+    _proto.onKeyDownLetter = function (letter, isPipei, score) {
+        if(isPipei) {
+            var pressBg = pressBgArr[letter.guidao];
+            var handler = new Handler(pressBg, function () {
+                Tween.to(pressBg, {alpha: 0}, 200, null, null, 300);
+            });
+            Tween.clearAll(pressBg);
+            Tween.to(pressBg, {alpha: 1}, 100, null, handler);
+            letter.pipei(score);
+            scoreManager.addScore(score);
+        } else {
+            letter.bupipei();
+        }
+    }
+
 })();
