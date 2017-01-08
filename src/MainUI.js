@@ -8,7 +8,8 @@
 
     (function () {
 //        Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
-        Laya.init(Browser.clientWidth, Browser.clientHeight);
+//        Laya.init(Browser.clientWidth, Browser.clientHeight);
+        Laya.init(1080, 1920);
 
         Laya.stage.alignV = Stage.ALIGN_MIDDLE;
         Laya.stage.alignH = Stage.ALIGN_CENTER;
