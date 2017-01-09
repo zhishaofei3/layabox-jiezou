@@ -1,9 +1,12 @@
 (function () {
 
     var Sprite = Laya.Sprite;
+    var Text = Laya.Text;
+
     var bottomBgPanel;//分数区容器
     var HTMLDivElement = Laya.HTMLDivElement;
 
+    var beforeTxt;
     var bottomHTMLTxt;
 
     var hasUnderLineAtLast = false;
@@ -30,9 +33,9 @@
         if (_this.letterObjArr) {
             _this.outputLetterArr(_this.letterObjArr, _this.positionIJ);
         } else {
-            var htmlStr = '<span style="color: #00F8B0;">></span>';
+            var htmlStr = '';
             if (hasUnderLineAtLast) {
-                htmlStr = '<span style="color: #00F8B0;">_</span>';
+                htmlStr = '<span style="color: #00F8B0;">▌</span>';
             }
             bottomHTMLTxt.innerHTML = htmlStr;
         }
@@ -47,25 +50,35 @@
 
     _proto.initText = function () {
         var _this = this;
+
+        var beforeTxt = new Text();
+        beforeTxt.font = "Impact";
+        beforeTxt.fontSize = 35;
+        beforeTxt.color = "#00F8B0";
+        beforeTxt.fontWeight = "bold";
+        beforeTxt.x = 122;
+        beforeTxt.y = 38;
+        beforeTxt.text = '>';
+        _this.addChild(beforeTxt);
+
         bottomHTMLTxt = new HTMLDivElement();
         bottomHTMLTxt.style.font = "Impact";
         bottomHTMLTxt.style.fontSize = 35;
         bottomHTMLTxt.style.color = "#aeaeb1";
         bottomHTMLTxt.style.fontWeight = "bold";
         bottomHTMLTxt.style.lineHeight = 50;
-        bottomHTMLTxt.style.textShadow = "0px 0px 10px #00f8b0";
         bottomHTMLTxt.style.letterSpacing = 8;
         bottomHTMLTxt.width = 825;
         bottomHTMLTxt.height = 156;
-        bottomHTMLTxt.x = 122;
+        bottomHTMLTxt.x = 152;
         bottomHTMLTxt.y = 32;
         _this.addChild(bottomHTMLTxt);
     }
 
     _proto.outputLetterArr = function (letterObjArr, positionIJ) {
         var _this = this;
-        var htmlStr = '<span style="color: #00F8B0;">></span>';
-        if(!positionIJ) {
+        var htmlStr = '';
+        if (!positionIJ) {
             return;
         }
         var endI = positionIJ[0];
@@ -91,16 +104,16 @@
                     } else if (letterObj.status == 1) {
                         htmlStr += '<span style="color: #00F8B0;">' + letterObj.letter + '</span>';
                     } else if (letterObj.status == -1) {
-                        htmlStr += '<span style="color: #ff6464;">' + letterObj.letter + '</span>';
+                        htmlStr += '<span style="color: #FF6464;">' + letterObj.letter + '</span>';
                     }
                 }
             }
             if (i != endI) {
-                htmlStr += '<br/><span style="display: none;">></span>';
+                htmlStr += '<br/>';
             }
         }
         if (hasUnderLineAtLast) {
-            htmlStr += '<span style="color: #00F8B0;">_</span>';
+            htmlStr += '<span style="color: #00F8B0;">▌</span>';
         }
         bottomHTMLTxt.innerHTML = htmlStr;
 

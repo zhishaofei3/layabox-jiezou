@@ -154,7 +154,7 @@
             letterBox.name = 'x' + getRandomColor();
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, 1000);
+        }, 2000);
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -199,7 +199,7 @@
             }
         });
 
-        var V = 1000;
+        var V = 1500;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
         letterBox.moveTween.update = moveUpdateHandler;
 

@@ -22,13 +22,14 @@
         this.zimuCon = new Sprite();
         this.addChild(this.zimuCon);
         this.addLetterImg();
+        
+        this.addBgRect();
 
         this.moveTween = null;//移动缓动
         this.alphaTween = null;//出现缓动
 
 
         Laya.loader.load("res/parts/lizi2.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
-        this.drawShawdow();
     }
 
     function onAssetsLoaded(settings) {
@@ -69,12 +70,12 @@
         this.zimuCon = null;
     }
 
-//    _proto.addBgRect = function () {
-//        var bgSp = new Sprite();
-//        bgSp.graphics.
-//    }
-
-    _proto.drawShawdow = function () {
+    _proto.addBgRect = function () {
+        var bgSp = new Sprite();
+        bgSp.loadImage('res/imgs/letterBg.png');
+        bgSp.x = -80;
+        bgSp.y = -250;
+        this.zimuCon.addChild(bgSp);
     }
 
     _proto.xiaoshi = function () {
