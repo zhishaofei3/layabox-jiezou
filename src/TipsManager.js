@@ -4,6 +4,7 @@
     var Handler = Laya.Handler;
     var Sprite = Laya.Sprite;
     var TimeLine = Laya.TimeLine;
+    var Text = Laya.Text;
     var Tween = Laya.Tween;
 
     var readyTip;
@@ -14,8 +15,12 @@
     var perfectTip;
     var goodTip;
     var missTip;
+    var comboTip;
+    var comboTxt;
 
     var lastTip;
+
+    var comboCount = 0;
 
     function TipsManager() {
         var _this = this;
@@ -83,18 +88,60 @@
         missTip.pivot(163, 66);
         missTip.pos((Laya.stage.width) / 2, 820);
         _this.addChild(missTip);
+
+        comboTip = new Sprite();
+        comboTip.loadImage("res/imgs/combo.png");
+        comboTip.alpha = 0;
+        comboTip.pivot(183, 66);
+        comboTip.pos((Laya.stage.width) / 2 - 60, 1010);
+
+        comboTxt = new Text();
+        comboTxt.font = "Impact";
+        comboTxt.fontSize = 80;
+        comboTxt.color = "#FFE202";
+        comboTxt.x = 390;
+        comboTxt.y = 20;
+        comboTxt.text = '';
+
+        comboTip.addChild(comboTxt);
+        _this.addChild(comboTip);
+    }
+
+    _proto.showCombo = function (num) {
+        var handler = new Handler(lastTip, function () {
+            Tween.to(comboTip, {alpha: 0, scaleX: 2, scaleY: 2, y: 1010}, 100, null, null, 250);
+        });
+
+        comboTip.scaleX = 0.4;
+        comboTip.scaleY = 0.4;
+        comboTip.y = 1010;
+        comboTip.alpha = 0;
+
+        if(num != 1) {
+            comboTip.pos((Laya.stage.width) / 2 - 60, 1010);
+            comboTxt.text = ' x ' + num;
+        } else {
+            comboTip.pos((Laya.stage.width) / 2, 1010);
+            comboTxt.text = '';
+        }
+
+        Tween.to(comboTip, {alpha: 1, scaleX: 1, scaleY: 1}, 50, null, handler, 120);
     }
 
 
     _proto.showPlayTip = function (score) {
         var _this = this;
         if (score == 20) {
+            comboCount++;
             _this.showTip(fantasticTip);
         } else if (score == 10) {
+            comboCount++;
             _this.showTip(perfectTip);
         } else if (score == 5) {
+            comboCount++;
             _this.showTip(goodTip);
         } else if (score == 0) {
+            comboCount = 0;
             _this.showTip(missTip);
         }
     }
@@ -119,10 +166,20 @@
         newTip.alpha = 0;
         Tween.to(newTip, {alpha: 1, scaleX: 1, scaleY: 1}, 100, null, handler);
         lastTip = newTip;
+
+        if(comboCount >= 2) {
+            _this.showCombo(comboCount - 1);
+        }
     }
 
     _proto.readyGO = function () {
         var _this = this;
+
+        setTimeout(function () {
+            _this.event("Start_Game_Event");
+        }, 0);
+        return;
+
         var timeLine = new TimeLine();
         timeLine.addLabel("readyIn", 0).to(readyTip, {scaleX: 1, scaleY: 1, alpha: 1}, 500, null, 0)
             .addLabel("readyOut", 0).to(readyTip, {scaleX: 5, scaleY: 5, alpha: 0}, 200, null, 0)

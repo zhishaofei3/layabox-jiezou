@@ -154,7 +154,7 @@
             letterBox.name = 'x' + getRandomColor();
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, 2000);
+        }, 1000);
     }
 
     _proto.appendOneLetter = function (letterBox) {
