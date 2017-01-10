@@ -26,9 +26,7 @@
         'ALERT END'
     ];//单词数组
     var letterObjArr = [];
-    var showLetterObjArr = [];
     var currLetter = {};//当前字母
-    var moveUpdateHandler;//移动到下面方块 亮句柄函数
 
     var screenLetterBoxArr = [];//在屏幕中的字母数组
 
@@ -176,7 +174,7 @@
             _this.removeLetter(this);
         });
 
-        moveUpdateHandler = new Handler(letterBox, function () {
+        var moveUpdateHandler = new Handler(letterBox, function () {
             var pressBg = pressBgArr[this.guidao];
             var oneRoad = roadArr[this.guidao];
             var isPeng = false;
@@ -202,6 +200,7 @@
         var V = 1500;
         letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
         letterBox.moveTween.update = moveUpdateHandler;
+        letterBox.moveTweenUpdate = moveUpdateHandler;//因为最后会给letter做Tween.clearAll(); 所以需要预留句柄做最后清除轨道痕迹回调
 
         letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
 
@@ -262,8 +261,8 @@
         if (isPipei) {
             tipsManager.showPlayTip(score);
             letter.pipei(score);
+            letter.moveTweenUpdate.run();
             scoreManager.addScore(score);
-            moveUpdateHandler.runWith(true);
         } else {
             tipsManager.showPlayTip(0);
             letter.bupipei();
