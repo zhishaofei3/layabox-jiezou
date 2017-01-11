@@ -101,7 +101,7 @@
 
     _proto.startGame = function () {
         var _this = this;
-        _this.playMusic();
+//        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
