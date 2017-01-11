@@ -169,7 +169,7 @@
 
         letterNum++;
 
-        if(letterNum == 4) {
+        if (letterNum == 4) {
             console.log('加速了');
             intervalDelay = 1200;
             letterV = 1400;

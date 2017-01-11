@@ -22,7 +22,7 @@
         this.zimuCon = new Sprite();
         this.addChild(this.zimuCon);
         this.addLetterImg();
-        
+
         this.addBgRect();
 
         this.moveTween = null;//移动缓动
@@ -83,8 +83,6 @@
 
         Tween.clearAll(_this);
         _this.isOver = true;
-
-//        console.log(_this.guidao + " " + _this.y);
 
         Tween.to(_this, {alpha: 0}, 500, null, new Handler(this, function () {
             _this.event('UILetterBox_Remove_Event', [this]);
