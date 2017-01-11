@@ -108,8 +108,7 @@
 
     _proto.endGame = function () {
         var _this = this;
-        console.log("游戏结束");
-        endManager.showEndPanel(1657, 20);
+        endManager.showEndPanel(1657, 20, false, letterObjArr, currLetter.position);
     }
 
     _proto.playMusic = function () {
