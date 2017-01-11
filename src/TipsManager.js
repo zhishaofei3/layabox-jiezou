@@ -18,11 +18,13 @@
     var comboTip;
     var comboTxt;//连击文本
     var countDownTxt;//倒计时文本
+    var scoreTxt;//分数文本
 
     var lastTip;
 
     var comboCount = 0;
     var countDown = 30;
+    var score = 0;
 
     function TipsManager() {
         var _this = this;
@@ -120,6 +122,18 @@
         countDownTxt.text = countDown.toString();
         _this.addChild(countDownTxt);
 
+        score = 0;
+        scoreTxt = new Text();
+        scoreTxt.font = "Impact";
+        scoreTxt.fontSize = 50;
+        scoreTxt.color = "#21D4A1";
+        scoreTxt.x = 890;
+        scoreTxt.y = 132;
+        scoreTxt.width = 50;
+        scoreTxt.align = 'left';
+        scoreTxt.text = score.toString();
+        _this.addChild(scoreTxt);
+
         _this.setCountDown();
     }
 
@@ -135,6 +149,11 @@
                 _this.event("End_Game_Event");
             }
         }
+    }
+
+    _proto.setScore = function (addScore) {
+        score += addScore;
+        scoreTxt.text = score.toString();
     }
 
     _proto.showCombo = function (num) {
@@ -174,6 +193,7 @@
             comboCount = 0;
             _this.showTip(missTip);
         }
+        _this.setScore(score);
     }
 
     _proto.showTip = function (newTip) {
