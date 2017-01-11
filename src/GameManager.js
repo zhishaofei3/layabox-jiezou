@@ -34,6 +34,10 @@
 
     var i = 0, j = 0;//数组下标
 
+    var intervalDelay = 2000;
+    var letterV = 2000;
+    var letterNum = 0;
+
     function GameManager() {
         var _this = this;
         GameManager.super(_this);
@@ -90,6 +94,7 @@
         var _this = this;
         tipsManager.readyGO();
         tipsManager.on("Start_Game_Event", _this, _this.startGame);
+        tipsManager.on("End_Game_Event", _this, _this.endGame);
     }
 
     _proto.startGame = function () {
@@ -97,6 +102,10 @@
         _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
+    }
+
+    _proto.endGame = function () {
+        console.log("游戏结束");
     }
 
     _proto.playMusic = function () {
@@ -152,11 +161,24 @@
             letterBox.name = 'x' + getRandomColor();
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, 1000);
+        }, intervalDelay);
     }
 
     _proto.appendOneLetter = function (letterBox) {
         var _this = this;
+
+        letterNum++;
+
+        if(letterNum == 4) {
+            console.log('加速了');
+            intervalDelay = 1200;
+            letterV = 1400;
+        } else if (letterNum == 10) {
+            console.log('又加速了');
+            intervalDelay = 600;
+            letterV = 1000;
+        }
+
         screenLetterBoxArr.push(letterBox);
 
         var randomIndex = _.random(0, 3);
@@ -197,12 +219,11 @@
             }
         });
 
-        var V = 1500;
-        letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, V, Ease.linearNone, handler);
+        letterBox.moveTween = Tween.to(letterBox, fourRoadPosition[randomIndex].end, letterV, Ease.linearNone, handler);
         letterBox.moveTween.update = moveUpdateHandler;
         letterBox.moveTweenUpdate = moveUpdateHandler;//因为最后会给letter做Tween.clearAll(); 所以需要预留句柄做最后清除轨道痕迹回调
 
-        letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, V * 0.2);
+        letterBox.alphaTween = Tween.to(letterBox, {alpha: 1}, letterV * 0.2);
 
         letterBox.on('UILetterBox_Remove_Event', this, _this.removeLetter);
     }

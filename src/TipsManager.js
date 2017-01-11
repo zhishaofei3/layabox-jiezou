@@ -16,11 +16,13 @@
     var goodTip;
     var missTip;
     var comboTip;
-    var comboTxt;
+    var comboTxt;//连击文本
+    var countDownTxt;//倒计时文本
 
     var lastTip;
 
     var comboCount = 0;
+    var countDown = 30;
 
     function TipsManager() {
         var _this = this;
@@ -93,7 +95,7 @@
         comboTip.loadImage("res/imgs/combo.png");
         comboTip.alpha = 0;
         comboTip.pivot(183, 66);
-        comboTip.pos((Laya.stage.width) / 2 - 60, 1010);
+        comboTip.pos((Laya.stage.width) / 2 - 60, 600);
 
         comboTxt = new Text();
         comboTxt.font = "Impact";
@@ -105,27 +107,55 @@
 
         comboTip.addChild(comboTxt);
         _this.addChild(comboTip);
+
+        countDown = 30;
+        countDownTxt = new Text();
+        countDownTxt.font = "Impact";
+        countDownTxt.fontSize = 50;
+        countDownTxt.color = "#21D4A1";
+        countDownTxt.x = 230;
+        countDownTxt.y = 152;
+        countDownTxt.width = 50;
+        countDownTxt.align = 'right';
+        countDownTxt.text = countDown.toString();
+        _this.addChild(countDownTxt);
+
+        _this.setCountDown();
+    }
+
+    _proto.setCountDown = function () {
+        var _this = this;
+        var countDownTimer = Laya.timer.loop(1000, _this, countDownHandler);
+
+        function countDownHandler() {
+            countDown--;
+            countDownTxt.text = countDown.toString();
+            if(countDown == 0) {
+                Laya.timer.clear(_this, countDownHandler);
+                _this.event("End_Game_Event");
+            }
+        }
     }
 
     _proto.showCombo = function (num) {
         var handler = new Handler(lastTip, function () {
-            Tween.to(comboTip, {alpha: 0, scaleX: 2, scaleY: 2, y: 1010}, 100, null, null, 250);
+            Tween.to(comboTip, {alpha: 0, scaleX: 1.5, scaleY: 1.5, y: 600}, 100, null, null, 250);
         });
 
-        comboTip.scaleX = 0.4;
-        comboTip.scaleY = 0.4;
-        comboTip.y = 1010;
+        comboTip.scaleX = 0.2;
+        comboTip.scaleY = 0.2;
+        comboTip.y = 650;
         comboTip.alpha = 0;
 
         if(num != 1) {
-            comboTip.pos((Laya.stage.width) / 2 - 60, 1010);
+            comboTip.pos((Laya.stage.width) / 2 - 60, 650);
             comboTxt.text = ' x ' + num;
         } else {
-            comboTip.pos((Laya.stage.width) / 2, 1010);
+            comboTip.pos((Laya.stage.width) / 2, 650);
             comboTxt.text = '';
         }
 
-        Tween.to(comboTip, {alpha: 1, scaleX: 1, scaleY: 1}, 50, null, handler, 120);
+        Tween.to(comboTip, {alpha: 1, scaleX: 0.7, scaleY: 0.7}, 50, null, handler, 120);
     }
 
 
