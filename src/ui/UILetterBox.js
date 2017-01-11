@@ -49,7 +49,7 @@
 
     _proto.addLetterImg = function () {
         var imgSprite = new Sprite();
-        imgSprite.loadImage('res/imgs/' + this.wordObj.letter + '.png');
+        imgSprite.loadImage('res/imgs/' + this.wordObj.letter.toLowerCase() + '.png');
         imgSprite.scaleX = 0.45;
         imgSprite.scaleY = 0.45;
         imgSprite.x = 24;

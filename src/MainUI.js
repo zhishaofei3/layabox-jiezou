@@ -1,6 +1,5 @@
 (function () {
     var Stage = Laya.Stage;
-    var Browser = Laya.Browser;
     var Handler = Laya.Handler;
     var WebGL = Laya.WebGL;
     var Loader = Laya.Loader;
@@ -16,7 +15,7 @@
 
         Laya.stage.screenMode = Stage.SCREEN_NONE;
         Laya.stage.bgColor = "#232628";
-        Stat.show();
+//        Stat.show();
         init();
     })();
 

@@ -101,10 +101,10 @@
 
         comboTxt = new Text();
         comboTxt.font = "Impact";
-        comboTxt.fontSize = 80;
+        comboTxt.fontSize = 130;
         comboTxt.color = "#FFE202";
-        comboTxt.x = 390;
-        comboTxt.y = 20;
+        comboTxt.x = 370;
+        comboTxt.y = -20;
         comboTxt.text = '';
 
         comboTip.addChild(comboTxt);
@@ -118,7 +118,6 @@
         countDownTxt.x = 230;
         countDownTxt.y = 152;
         countDownTxt.width = 50;
-        countDownTxt.align = 'right';
         countDownTxt.text = countDown.toString();
         _this.addChild(countDownTxt);
 
@@ -127,10 +126,10 @@
         scoreTxt.font = "Impact";
         scoreTxt.fontSize = 50;
         scoreTxt.color = "#21D4A1";
-        scoreTxt.x = 890;
-        scoreTxt.y = 132;
-        scoreTxt.width = 50;
-        scoreTxt.align = 'left';
+        scoreTxt.x = 794;
+        scoreTxt.y = 184;
+        scoreTxt.width = 80;
+        scoreTxt.align = 'center';
         scoreTxt.text = score.toString();
         _this.addChild(scoreTxt);
 
@@ -139,7 +138,7 @@
 
     _proto.setCountDown = function () {
         var _this = this;
-        var countDownTimer = Laya.timer.loop(1000, _this, countDownHandler);
+        Laya.timer.loop(1000, _this, countDownHandler);
 
         function countDownHandler() {
             countDown--;
@@ -168,13 +167,13 @@
 
         if (num != 1) {
             comboTip.pos((Laya.stage.width) / 2 - 60, 650);
-            comboTxt.text = ' x ' + num;
+            comboTxt.text = ' ' + num;
         } else {
             comboTip.pos((Laya.stage.width) / 2, 650);
             comboTxt.text = '';
         }
 
-        Tween.to(comboTip, {alpha: 1, scaleX: 0.7, scaleY: 0.7}, 50, null, handler, 120);
+        Tween.to(comboTip, {alpha: 1, scaleX: 0.8, scaleY: 0.8}, 50, null, handler, 120);
     }
 
 
@@ -225,10 +224,10 @@
     _proto.readyGO = function () {
         var _this = this;
 
-        setTimeout(function () {
-            _this.event("Start_Game_Event");
-        }, 0);
-        return;
+//        setTimeout(function () {
+//            _this.event("Start_Game_Event");
+//        }, 0);
+//        return;
 
         var timeLine = new TimeLine();
         timeLine.addLabel("readyIn", 0).to(readyTip, {scaleX: 1, scaleY: 1, alpha: 1}, 500, null, 0)

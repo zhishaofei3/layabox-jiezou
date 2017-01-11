@@ -2,9 +2,9 @@
 
     var Sprite = Laya.Sprite;
     var Text = Laya.Text;
+    var HTMLDivElement = Laya.HTMLDivElement;
 
     var bottomBgPanel;//分数区容器
-    var HTMLDivElement = Laya.HTMLDivElement;
 
     var beforeTxt;
     var bottomHTMLTxt;
@@ -64,7 +64,7 @@
         bottomHTMLTxt = new HTMLDivElement();
         bottomHTMLTxt.style.font = "Impact";
         bottomHTMLTxt.style.fontSize = 35;
-        bottomHTMLTxt.style.color = "#aeaeb1";
+        bottomHTMLTxt.style.color = "#AEAEB1";
         bottomHTMLTxt.style.fontWeight = "bold";
         bottomHTMLTxt.style.lineHeight = 50;
         bottomHTMLTxt.style.letterSpacing = 8;

@@ -1,13 +1,10 @@
 (function () {
 
-    var BlurFilter = Laya.BlurFilter;
-    var Browser = Laya.Browser;
     var Ease = Laya.Ease;
     var Event = Laya.Event;
     var Handler = Laya.Handler;
     var SoundManager = Laya.SoundManager;
     var Sprite = Laya.Sprite;
-    var Keyboard = Laya.Keyboard;
     var Tween = Laya.Tween;
 
     var bgManager;//游戏主背景
@@ -16,6 +13,7 @@
     var gamePanel;//游戏区容器
     var gameBgPanel;//游戏区背景
     var bottomManager;//底部容器
+    var endManager;//结束容器
     var tipsManager;//提示容器（层级最高）
     var roadArr = [];//四条路数组
     var pressBgArr = [];//四个按键闪光数组
@@ -34,7 +32,7 @@
 
     var i = 0, j = 0;//数组下标
 
-    var intervalDelay = 2000;
+    var intervalDelay = 500;
     var letterV = 2000;
     var letterNum = 0;
 
@@ -71,6 +69,9 @@
         tipsManager = new TipsManager();
         this.addChild(tipsManager);
 
+        endManager = new EndManager();
+        this.addChild(endManager);
+
         _this.initGame();
         _this.addEvents();
     }
@@ -95,6 +96,7 @@
         tipsManager.readyGO();
         tipsManager.on("Start_Game_Event", _this, _this.startGame);
         tipsManager.on("End_Game_Event", _this, _this.endGame);
+//        _this.endGame();
     }
 
     _proto.startGame = function () {
@@ -105,7 +107,9 @@
     }
 
     _proto.endGame = function () {
+        var _this = this;
         console.log("游戏结束");
+        endManager.showEndPanel(1657, 20);
     }
 
     _proto.playMusic = function () {
@@ -169,15 +173,15 @@
 
         letterNum++;
 
-        if (letterNum == 4) {
-            console.log('加速了');
-            intervalDelay = 1200;
-            letterV = 1400;
-        } else if (letterNum == 10) {
-            console.log('又加速了');
-            intervalDelay = 600;
-            letterV = 1000;
-        }
+//        if (letterNpum == 4) {
+//            console.log('加速了');
+//            intervalDelay = 300;
+//            letterV = 1000;
+//        } else if (letterNum == 10) {
+//            console.log('又加速了');
+//            intervalDelay = 300;
+//            letterV = 1000;
+//        }
 
         screenLetterBoxArr.push(letterBox);
 
@@ -283,7 +287,6 @@
             tipsManager.showPlayTip(score);
             letter.pipei(score);
             letter.moveTweenUpdate.run();
-            scoreManager.addScore(score);
         } else {
             tipsManager.showPlayTip(0);
             letter.bupipei();
