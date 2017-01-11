@@ -68,7 +68,7 @@
         });
         imgContainer.addChild(menuBtn);
 
-        imgContainer.visible = true;
+        endContainer.visible = true;
         imgContainer.scaleX = 0;
         Tween.to(imgContainer, {scaleX: 1}, 300, null, new Handler(this, function () {
             Tween.to(menuBtn, {scaleY: 1}, 200);
