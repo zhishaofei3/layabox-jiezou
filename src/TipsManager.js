@@ -130,7 +130,7 @@
         function countDownHandler() {
             countDown--;
             countDownTxt.text = countDown.toString();
-            if(countDown == 0) {
+            if (countDown == 0) {
                 Laya.timer.clear(_this, countDownHandler);
                 _this.event("End_Game_Event");
             }
@@ -147,7 +147,7 @@
         comboTip.y = 650;
         comboTip.alpha = 0;
 
-        if(num != 1) {
+        if (num != 1) {
             comboTip.pos((Laya.stage.width) / 2 - 60, 650);
             comboTxt.text = ' x ' + num;
         } else {
@@ -197,7 +197,7 @@
         Tween.to(newTip, {alpha: 1, scaleX: 1, scaleY: 1}, 100, null, handler);
         lastTip = newTip;
 
-        if(comboCount >= 2) {
+        if (comboCount >= 2) {
             _this.showCombo(comboCount - 1);
         }
     }
@@ -220,7 +220,7 @@
         timeLine.on(Event.COMPLETE, this, onComplete);
 
         function onLabel(label) {
-            if(label == "readyOut") {
+            if (label == "readyOut") {
                 timeLine.pause();
                 setTimeout(function () {
                     timeLine.resume();
