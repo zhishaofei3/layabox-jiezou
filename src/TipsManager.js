@@ -154,6 +154,10 @@
         score += addScore;
         scoreTxt.text = score.toString();
     }
+    
+    _proto.getScore = function() {
+        return score;
+    }
 
     _proto.showCombo = function (num) {
         var handler = new Handler(lastTip, function () {

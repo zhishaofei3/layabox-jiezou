@@ -33,7 +33,7 @@
     var i = 0, j = 0;//数组下标
 
     var intervalDelay = 500;
-    var letterV = 2000;
+    var letterV = 3400;
     var letterNum = 0;
 
     function GameManager() {
@@ -108,7 +108,8 @@
 
     _proto.endGame = function () {
         var _this = this;
-        endManager.showEndPanel(1657, 20, false, letterObjArr, currLetter.position);
+        var score = tipsManager.getScore();
+        endManager.showEndPanel(score, 76, false, letterObjArr, currLetter.position);
     }
 
     _proto.playMusic = function () {
