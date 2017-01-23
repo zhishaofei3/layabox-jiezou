@@ -23,8 +23,16 @@
     var lastTip;
 
     var comboCount = 0;
-    var countDown = 30;
-    var score = 0;
+    var countDown = 40;
+
+    var scoreObj = {
+        fantastic: 0,
+        perfect: 0,
+        good: 0,
+        miss: 0,
+        comboMax: 0,
+        totalScore: 0
+    };
 
     function TipsManager() {
         var _this = this;
@@ -110,7 +118,7 @@
         comboTip.addChild(comboTxt);
         _this.addChild(comboTip);
 
-        countDown = 30;
+        countDown = 40;
         countDownTxt = new Text();
         countDownTxt.font = "Impact";
         countDownTxt.fontSize = 50;
@@ -121,7 +129,7 @@
         countDownTxt.text = countDown.toString();
         _this.addChild(countDownTxt);
 
-        score = 0;
+        scoreObj.totalScore = 0;
         scoreTxt = new Text();
         scoreTxt.font = "Impact";
         scoreTxt.fontSize = 50;
@@ -130,7 +138,7 @@
         scoreTxt.y = 184;
         scoreTxt.width = 80;
         scoreTxt.align = 'center';
-        scoreTxt.text = score.toString();
+        scoreTxt.text = scoreObj.totalScore.toString();
         _this.addChild(scoreTxt);
 
         _this.setCountDown();
@@ -151,12 +159,12 @@
     }
 
     _proto.setScore = function (addScore) {
-        score += addScore;
-        scoreTxt.text = score.toString();
+        scoreObj.totalScore += addScore;
+        scoreTxt.text = scoreObj.totalScore.toString();
     }
     
     _proto.getScore = function() {
-        return score;
+        return scoreObj;
     }
 
     _proto.showCombo = function (num) {
@@ -181,22 +189,35 @@
     }
 
 
-    _proto.showPlayTip = function (score) {
+    _proto.showPlayTip = function (addScore) {
         var _this = this;
-        if (score == 20) {
+        if (addScore == 20) {
+            scoreObj.fantastic++;
             comboCount++;
+            if(comboCount > scoreObj.comboMax) {
+                scoreObj.comboMax = comboCount;
+            }
             _this.showTip(fantasticTip);
-        } else if (score == 10) {
+        } else if (addScore == 10) {
+            scoreObj.perfect++;
             comboCount++;
+            if(comboCount > scoreObj.comboMax) {
+                scoreObj.comboMax = comboCount;
+            }
             _this.showTip(perfectTip);
-        } else if (score == 5) {
+        } else if (addScore == 5) {
+            scoreObj.good++;
             comboCount++;
+            if(comboCount > scoreObj.comboMax) {
+                scoreObj.comboMax = comboCount;
+            }
             _this.showTip(goodTip);
-        } else if (score == 0) {
+        } else if (addScore == 0) {
+            scoreObj.miss++;
             comboCount = 0;
             _this.showTip(missTip);
         }
-        _this.setScore(score);
+        _this.setScore(addScore);
     }
 
     _proto.showTip = function (newTip) {

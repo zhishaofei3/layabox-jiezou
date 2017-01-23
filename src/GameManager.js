@@ -32,8 +32,8 @@
 
     var i = 0, j = 0;//数组下标
 
-    var intervalDelay = 500;
-    var letterV = 3400;
+    var timeoutDelay = 1600;
+    var letterV = 3000;
     var letterNum = 0;
 
     function GameManager() {
@@ -101,15 +101,15 @@
 
     _proto.startGame = function () {
         var _this = this;
-        _this.playMusic();
+//        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
 
     _proto.endGame = function () {
         var _this = this;
-        var score = tipsManager.getScore();
-        endManager.showEndPanel(score, 76, false, letterObjArr, currLetter.position);
+        var obj = tipsManager.getScore();
+        endManager.showEndPanel(obj);
     }
 
     _proto.playMusic = function () {
@@ -144,8 +144,9 @@
         //按letterObjArr输出
         i = 0;
         j = 0;
+        var timeoutId = 0;
 
-        var intervalId = setInterval(function () {
+        function nextTimeout() {
             do {
                 if (!currLetter) {
                     i++;
@@ -156,7 +157,7 @@
                 } else {
                     var lastLine = letterObjArr[letterObjArr.length - 1];
                     currLetter = lastLine[lastLine.length - 1];
-                    clearInterval(intervalId);
+                    clearInterval(timeoutId);
                     return;
                 }
             } while (!currLetter || currLetter.letter == " ");
@@ -165,7 +166,11 @@
             letterBox.name = 'x' + getRandomColor();
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
-        }, intervalDelay);
+            timeoutId = setTimeout(nextTimeout, timeoutDelay);
+            console.log(timeoutDelay);
+        }
+
+        nextTimeout();
     }
 
     _proto.appendOneLetter = function (letterBox) {
@@ -173,15 +178,15 @@
 
         letterNum++;
 
-//        if (letterNpum == 4) {
-//            console.log('加速了');
-//            intervalDelay = 300;
-//            letterV = 1000;
-//        } else if (letterNum == 10) {
-//            console.log('又加速了');
-//            intervalDelay = 300;
-//            letterV = 1000;
-//        }
+        if (letterNum == 4) {
+            console.log('加速了');
+            timeoutDelay = 1000;
+            letterV = 2800;
+        } else if (letterNum == 20) {
+            console.log('又加速了');
+            timeoutDelay = 500;
+            letterV = 2500;
+        }
 
         screenLetterBoxArr.push(letterBox);
 

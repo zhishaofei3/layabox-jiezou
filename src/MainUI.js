@@ -13,7 +13,7 @@
         Laya.stage.alignV = Stage.ALIGN_MIDDLE;
         Laya.stage.alignH = Stage.ALIGN_CENTER;
 
-        Laya.stage.screenMode = Stage.SCALE_SHOWALL;
+        Laya.stage.screenMode = Stage.SCREEN_NONE;
         Laya.stage.bgColor = "#232628";
 //        Stat.show();
         init();

@@ -4,12 +4,13 @@
     var Sprite = Laya.Sprite;
     var HTMLDivElement = Laya.HTMLDivElement;
     var Handler = Laya.Handler;
+    var Text = Laya.Text;
     var Tween = Laya.Tween;
 
     var endContainer;
     var imgContainer;
-    var codeTxt;
-    var tipTxt;
+
+    var rankTxt;
     var menuBtn;
 
     function EndManager() {
@@ -33,125 +34,155 @@
 
         imgContainer = new Sprite();
         imgContainer.loadImage("res/imgs/endPanel.png");
-        imgContainer.pivot(409, 549);
-        imgContainer.x = 540;
-        imgContainer.y = 960;
+        imgContainer.pivot(438, 689);
+        imgContainer.x = 545;
+        imgContainer.y = 915;
         endContainer.addChild(imgContainer);
 
         endContainer.visible = false;
         _this.addChild(endContainer);
     }
 
-    var bxCodeArr = [
-        'Loading BIOS …… Success.',
-        'Loading MBR …… Success.',
-        'Loading GRUB …… Success.',
-        'Uncompressing Linux …… OK, booting the kernel.',
-        'Starting Initialization …… Success.',
-        'Auto-Detecting Source code …… 1 Founded.'
-    ];
-    var lastStr = 'Auto-Executing Source code ……';
-
-    _proto.showEndPanel = function (score, baifenbi, hasGift, letterObjArr, positionIJ) {
+    _proto.showEndPanel = function (scoreObj) {
         var _this = this;
-        var codeIndex = 0;
-        var codeArr = ['', bxCodeArr[codeIndex]];
+        scoreObj.totalScore = 50;
 
-        var userHTMLArr = _this.getUserLetterArr(letterObjArr, positionIJ);
-        var totalArr = _.union(bxCodeArr, userHTMLArr);
-        totalArr.push(lastStr);
+        var rank = _this.saveAndGetRank(scoreObj.totalScore);
+        var rankStr = _this.getRankStr(rank);
 
-        console.log(totalArr);
+        rankTxt = new HTMLDivElement();
+        rankTxt.style.width = 150;
+        rankTxt.style.fontFamily = 'Impact';
+        rankTxt.style.fontSize = 60;
+        rankTxt.style.color = '#3CFFBE';
+        rankTxt.style.lineHeight = 60;
+        rankTxt.style.align = 'center';
+        rankTxt.x = 385;
+        rankTxt.y = 220;
+        rankTxt.innerHTML = rankStr;
+        imgContainer.addChild(rankTxt);
 
-        codeTxt = new HTMLDivElement();
-        codeTxt.style.width = 600;
-        codeTxt.style.height = 140;
-        codeTxt.style.fontFamily = 'Impact';
-        codeTxt.style.fontSize = 30;
-        codeTxt.style.color = '#3CFFBE';
-//        codeTxt.style.backgroundColor = '#FF0000';
-        codeTxt.style.lineHeight = 40;
-        codeTxt.innerHTML = codeArr.join('<br/>');
-        codeTxt.x = 105;
-        codeTxt.y = 235;
-        imgContainer.addChild(codeTxt);
+        var arr = [
+            {name: 'fantastic', txt: '> Fantastic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {name: 'perfect', txt: '> Perfect . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {name: 'good', txt: '> Good . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {name: 'miss', txt: '> Miss . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {name: 'comboMax', txt: '> Combo Max . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {name: 'totalScore', txt: '> Total Score . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
+            {txt: '> Code Exec Radio . . . '},
+            {txt: '> Perfect Raido . . . '}
+        ]
 
-        var intervalId = setInterval(function () {
-            codeIndex++;
-            if(codeIndex == totalArr.length - 1) {
-                clearInterval(intervalId);
+        var scoreTxtArr = [];
+        for(var i = 0; i < arr.length; i++) {
+            var lineArr = [];
+            var txt = arr[i].txt;
+            var nameTf = new Text();
+            nameTf.width = 600;
+            nameTf.height = 60;
+            nameTf.font = 'Arial';
+            nameTf.fontSize = 30;
+            nameTf.bold = false;
+            nameTf.color = '#3CFFBE';
+            nameTf.italic = true;
+            nameTf.overflow = 'hidden';
+            nameTf.x = 145;
+            nameTf.text = txt;
+            nameTf.visible = false;
+            imgContainer.addChild(nameTf);
+            lineArr.push(nameTf);
+
+            var name = arr[i].name;
+            if(name) {
+                var scoreHtml = new HTMLDivElement();
+                scoreHtml.style.height = 60;
+                scoreHtml.style.fontFamily = 'Arial';
+                scoreHtml.style.fontSize = 30;
+                scoreHtml.style.color = '#3CFFBE';
+                scoreHtml.style.lineHeight = 30;
+                scoreHtml.style.fontStyle = 'italic';
+                scoreHtml.style.align = 'right';
+                scoreHtml.x = 540;
+                scoreHtml.innerHTML = (scoreObj[name]).toString();
+                scoreHtml.visible = false;
+                nameTf.width = 600 - scoreHtml.contextWidth - 5;
+                imgContainer.addChild(scoreHtml);
+                lineArr.push(scoreHtml);
             }
-            if(codeArr.length == 2) {
-                codeArr.shift();
-            }
-            codeArr.push(totalArr[codeIndex]);
-            codeTxt.innerHTML = codeArr.join('<br/>');
-        }, 500);
-
-        tipTxt = new HTMLDivElement();
-        tipTxt.style.width = 600;
-        tipTxt.style.height = 300;
-        tipTxt.style.fontFamily = '方正小标宋简体';
-        tipTxt.style.fontSize = 40;
-        tipTxt.style.color = '#3CFFBE';
-        tipTxt.style.align = 'center';
-        tipTxt.style.lineHeight = 70;
-        tipTxt.innerHTML = '恭喜你！<br/><span>完成了本次挑战，获得' + score + '分！</span><br/><span>领先全球' + baifenbi + '％玩家</span>';
-        tipTxt.x = 105;
-        tipTxt.y = 435;
-        imgContainer.addChild(tipTxt);
-
-        menuBtn = new Sprite();
-        menuBtn.loadImage("res/imgs/menu-btn.png");
-        menuBtn.pivot(340, 68);
-        menuBtn.x = 415;
-        menuBtn.y = 820;
-        menuBtn.scaleY = 0;
-        menuBtn.mouseEnabled = true;
-        menuBtn.on(Event.CLICK, this, function () {
-            window.location.href = 'http://baidu.com';
-        });
-        imgContainer.addChild(menuBtn);
-
-        endContainer.visible = true;
-        imgContainer.scaleX = 0;
-        Tween.to(imgContainer, {scaleX: 1}, 300, null, new Handler(this, function () {
-            Tween.to(menuBtn, {scaleY: 1}, 200);
-        }));
-    }
-
-    _proto.getUserLetterArr = function (letterObjArr, positionIJ) {
-        var arr = [];
-        var htmlStr = '';
-        if (!positionIJ) {
-            return;
+            scoreTxtArr.push(lineArr);
         }
 
-        var endI = positionIJ[0];
-        var endJ = positionIJ[1];
-
-        for (var i = 0; i <= endI; i++) {
-            var endJJ;
-            htmlStr = '';
-            if (i < endI) {
-                endJJ = letterObjArr[i].length;
-            } else {
-                endJJ = endJ + 1;
+        var index = 0;
+        var intervalId = setInterval(function () {
+            var currShowArr = [];
+            for(var j = 0; j <= index; j++) {
+                var lineArr = scoreTxtArr[j];
+                currShowArr.push(lineArr);
             }
-            for (var j = 0; j < endJJ; j++) {
-                var letterObj = letterObjArr[i][j];
-                if (letterObj.letter == " ") {
-                    htmlStr += '&nbsp;';
-                } else {
-                    if (letterObj.status == 1) {
-                        htmlStr += '<span style="color: #00F8B0;">' + letterObj.letter + '</span>';
-                    } else if (letterObj.status == -1) {
-                        htmlStr += '<span style="color: #FF6464;">' + letterObj.letter + '</span>';
-                    }
+            currShowArr.reverse();
+            for (var k = 0; k < currShowArr.length; k++) {
+                var lineArr = currShowArr[k];
+                for (var n in lineArr) {
+                    lineArr[n].y = 980 - k * 60;
+                    lineArr[n].visible = true;
                 }
             }
-            arr.push(htmlStr);
-        }
-        return arr;
+            index++;
+            if(index == scoreTxtArr.length) {
+                clearInterval(intervalId);
+                menuBtn = new Sprite();
+                menuBtn.loadImage("res/imgs/menu-btn.png");
+                menuBtn.pivot(347, 74);
+                menuBtn.x = 446;
+                menuBtn.y = 1150;
+                menuBtn.scaleX = 0;
+                menuBtn.mouseEnabled = true;
+                menuBtn.on(Event.CLICK, this, function () {
+                    window.location.href = 'http://baidu.com';
+                });
+                imgContainer.addChild(menuBtn);
+                Tween.to(menuBtn, {scaleX: 1}, 200);
+            }
+        }, 200);
+        endContainer.visible = true;
     }
+
+    _proto.saveAndGetRank = function (score) {
+        score = 58;
+        var scoreStr = localStorage.getItem('score');
+        var scoreArr = [];
+        if(scoreStr) {
+            scoreArr = scoreStr.split(',');
+            scoreArr.sort(function (a, b) {
+                return parseInt(a) - parseInt(b);
+            });
+        }
+
+        var paiming = scoreArr.length + 1;
+        for(var i = 0; i < scoreArr.length; i++) {
+            if(score > parseInt(scoreArr[i])) {
+                paiming--;
+            }
+        }
+
+        scoreArr.push(score);
+        var newScoreStr = scoreArr.join(',');
+        localStorage.setItem('score', newScoreStr);
+        return paiming;
+    }
+
+    _proto.getRankStr = function (rank) {
+        var rankStr = '';
+        if(rank == 1) {
+            rankStr = '1<span style="font-size: 47px; line-height: 50;">st</span>';
+        } else if (rank == 2) {
+            rankStr = '2<span style="font-size: 47px; line-height: 50;">nd</span>';
+        } else if (rank == 3) {
+            rankStr = '3<span style="font-size: 47px; line-height: 50;">rd</span>';
+        } else {
+            rankStr = rank + '<span style="font-size: 47px; line-height: 50;">th</span>';
+        }
+        return rankStr;
+    }
+
 })();
