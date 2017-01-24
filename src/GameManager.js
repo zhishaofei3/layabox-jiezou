@@ -24,6 +24,7 @@
         'ECHO HAPPY EVERY DAY',
         'ALERT END'
     ];//单词数组
+    var letterTotal = 0;
     var letterObjArr = [];
     var currLetter = {};//当前字母
 
@@ -87,6 +88,9 @@
             var line = wordsArr[i];
             for (var j = 0; j < line.length; j++) {
                 linArr.push({letter: line[j], status: 0, position: [i, j]});
+                if(line[j] != ' ') {
+                    letterTotal++;
+                }
             }
             letterObjArr.push(linArr);
         }
@@ -110,7 +114,8 @@
     _proto.endGame = function () {
         var _this = this;
         var obj = tipsManager.getScore();
-        endManager.showEndPanel(obj);
+        endManager.showEndPanel(obj, letterTotal);
+        bottomManager.endPrint(obj, letterTotal);
     }
 
     _proto.playMusic = function () {
@@ -175,7 +180,6 @@
             _this.appendOneLetter(letterBox);
             bottomManager.outputLetterArr(letterObjArr, currLetter.position);
             timeoutId = setTimeout(nextTimeout, timeoutDelay);
-            console.log(timeoutDelay);
         }
 
         nextTimeout();

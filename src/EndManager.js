@@ -43,7 +43,7 @@
         _this.addChild(endContainer);
     }
 
-    _proto.showEndPanel = function (scoreObj) {
+    _proto.showEndPanel = function (scoreObj, letterTotal) {
         var _this = this;
 
         var rank = _this.saveAndGetRank(scoreObj.totalScore);
@@ -150,15 +150,17 @@
                 imgContainer.addChild(menuBtn);
                 Tween.to(menuBtn, {scaleX: 1}, 200);
 
-                var guoguan = new Sprite();
-                guoguan.loadImage("res/imgs/guoguan.png");
-                guoguan.pivot(0, 96);
-                guoguan.x = 470;
-                guoguan.y = 1040;
-                guoguan.scaleX = 4;
-                guoguan.scaleY = 4;
-                Tween.to(guoguan, {scaleX: 1, scaleY: 1}, 200);
-                imgContainer.addChild(guoguan);
+                if(scoreObj.perfect / letterTotal > 0.75) {
+                    var guoguan = new Sprite();
+                    guoguan.loadImage("res/imgs/guoguan.png");
+                    guoguan.pivot(0, 96);
+                    guoguan.x = 470;
+                    guoguan.y = 1040;
+                    guoguan.scaleX = 4;
+                    guoguan.scaleY = 4;
+                    Tween.to(guoguan, {scaleX: 1, scaleY: 1}, 200, null, null, 200);
+                    imgContainer.addChild(guoguan);
+                }
             }
         }, 200);
         endContainer.visible = true;
