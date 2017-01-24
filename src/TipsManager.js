@@ -23,7 +23,7 @@
     var lastTip;
 
     var comboCount = 0;
-    var countDown = 35;
+    var countDown = 1;
 
     var scoreObj = {
         fantastic: 0,

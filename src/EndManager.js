@@ -53,7 +53,7 @@
         rankTxt.style.width = 150;
         rankTxt.style.fontFamily = 'Impact';
         rankTxt.style.fontSize = 60;
-        rankTxt.style.color = '#3CFFBE';
+        rankTxt.style.color = '#0EAB77';
         rankTxt.style.lineHeight = 60;
         rankTxt.style.align = 'center';
         rankTxt.x = 385;
@@ -62,14 +62,11 @@
         imgContainer.addChild(rankTxt);
 
         var arr = [
-            {name: 'fantastic', txt: '> Fantastic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
             {name: 'perfect', txt: '> Perfect . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
             {name: 'good', txt: '> Good . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
             {name: 'miss', txt: '> Miss . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
             {name: 'comboMax', txt: '> Combo Max . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
-            {name: 'totalScore', txt: '> Total Score . . . . . . . . . . . . . . . . . . . . . . . . . . . .'},
-            {txt: '> Code Exec Radio . . . '},
-            {txt: '> Perfect Raido . . . '}
+            {name: 'totalScore', txt: '> Total Score . . . . . . . . . . . . . . . . . . . . . . . . . . . .'}
         ]
 
         var scoreTxtArr = [];
@@ -78,11 +75,11 @@
             var txt = arr[i].txt;
             var nameTf = new Text();
             nameTf.width = 600;
-            nameTf.height = 60;
-            nameTf.font = 'Arial';
-            nameTf.fontSize = 30;
-            nameTf.bold = false;
-            nameTf.color = '#3CFFBE';
+            nameTf.height = 100;
+            nameTf.font = 'Charcoal CY';
+            nameTf.fontSize = 40;
+            nameTf.bold = true;
+            nameTf.color = '#0EAB77';
             nameTf.italic = true;
             nameTf.overflow = 'hidden';
             nameTf.x = 145;
@@ -94,12 +91,13 @@
             var name = arr[i].name;
             if(name) {
                 var scoreHtml = new HTMLDivElement();
-                scoreHtml.style.height = 60;
-                scoreHtml.style.fontFamily = 'Arial';
-                scoreHtml.style.fontSize = 30;
-                scoreHtml.style.color = '#3CFFBE';
-                scoreHtml.style.lineHeight = 30;
-                scoreHtml.style.fontStyle = 'italic';
+                scoreHtml.style.height = 100;
+                scoreHtml.style.fontFamily = 'Charcoal CY';
+                scoreHtml.style.fontSize = 40;
+                scoreHtml.style.bold = true;
+                scoreHtml.style.color = '#0EAB77';
+                scoreHtml.style.lineHeight = 40;
+                scoreHtml.style.italic = true;
                 scoreHtml.style.align = 'right';
                 scoreHtml.x = 540;
                 scoreHtml.innerHTML = (scoreObj[name]).toString();
@@ -122,25 +120,45 @@
             for (var k = 0; k < currShowArr.length; k++) {
                 var lineArr = currShowArr[k];
                 for (var n in lineArr) {
-                    lineArr[n].y = 980 - k * 60;
+                    lineArr[n].y = 950 - k * 100;
                     lineArr[n].visible = true;
                 }
             }
             index++;
             if(index == scoreTxtArr.length) {
                 clearInterval(intervalId);
+
                 menuBtn = new Sprite();
                 menuBtn.loadImage("res/imgs/menu-btn.png");
-                menuBtn.pivot(347, 74);
+                menuBtn.pivot(321, 51);
                 menuBtn.x = 446;
                 menuBtn.y = 1150;
                 menuBtn.scaleX = 0;
                 menuBtn.mouseEnabled = true;
+                menuBtn.size(643, 102);
+                menuBtn.on(Event.MOUSE_OVER, this, function () {
+                    menuBtn.graphics.clear();
+                    menuBtn.loadImage("res/imgs/menu-btn-hover.png");
+                });
+                menuBtn.on(Event.MOUSE_OUT, this, function () {
+                    menuBtn.graphics.clear();
+                    menuBtn.loadImage("res/imgs/menu-btn.png");
+                });
                 menuBtn.on(Event.CLICK, this, function () {
                     window.location.href = '../index/index-number.html';
                 });
                 imgContainer.addChild(menuBtn);
                 Tween.to(menuBtn, {scaleX: 1}, 200);
+
+                var guoguan = new Sprite();
+                guoguan.loadImage("res/imgs/guoguan.png");
+                guoguan.pivot(0, 96);
+                guoguan.x = 470;
+                guoguan.y = 1040;
+                guoguan.scaleX = 4;
+                guoguan.scaleY = 4;
+                Tween.to(guoguan, {scaleX: 1, scaleY: 1}, 200);
+                imgContainer.addChild(guoguan);
             }
         }, 200);
         endContainer.visible = true;
