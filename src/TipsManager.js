@@ -23,7 +23,7 @@
     var lastTip;
 
     var comboCount = 0;
-    var countDown = 40;
+    var countDown = 35;
 
     var scoreObj = {
         fantastic: 0,
@@ -118,7 +118,6 @@
         comboTip.addChild(comboTxt);
         _this.addChild(comboTip);
 
-        countDown = 40;
         countDownTxt = new Text();
         countDownTxt.font = "Impact";
         countDownTxt.fontSize = 50;
@@ -249,10 +248,10 @@
     _proto.readyGO = function () {
         var _this = this;
 
-//        setTimeout(function () {
-//            _this.event("Start_Game_Event");
-//        }, 0);
-//        return;
+        setTimeout(function () {
+            _this.event("Start_Game_Event");
+        }, 0);
+        return;
 
         var timeLine = new TimeLine();
         timeLine.addLabel("readyIn", 0).to(readyTip, {scaleX: 1, scaleY: 1, alpha: 1}, 500, null, 0)

@@ -45,7 +45,6 @@
 
     _proto.showEndPanel = function (scoreObj) {
         var _this = this;
-        scoreObj.totalScore = 50;
 
         var rank = _this.saveAndGetRank(scoreObj.totalScore);
         var rankStr = _this.getRankStr(rank);
@@ -138,7 +137,7 @@
                 menuBtn.scaleX = 0;
                 menuBtn.mouseEnabled = true;
                 menuBtn.on(Event.CLICK, this, function () {
-                    window.location.href = 'http://baidu.com';
+                    window.location.href = '../index/index-number.html';
                 });
                 imgContainer.addChild(menuBtn);
                 Tween.to(menuBtn, {scaleX: 1}, 200);
@@ -148,7 +147,6 @@
     }
 
     _proto.saveAndGetRank = function (score) {
-        score = 58;
         var scoreStr = localStorage.getItem('score');
         var scoreArr = [];
         if(scoreStr) {

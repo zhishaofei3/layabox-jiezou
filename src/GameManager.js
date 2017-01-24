@@ -17,6 +17,7 @@
     var tipsManager;//提示容器（层级最高）
     var roadArr = [];//四条路数组
     var pressBgArr = [];//四个按键闪光数组
+    var roadPressBgArr = [];//四个按键闪光数组
 
     var wordsArr = [
         'PRINT HELLO NEW YEAR',
@@ -101,7 +102,7 @@
 
     _proto.startGame = function () {
         var _this = this;
-//        _this.playMusic();
+        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
@@ -127,6 +128,13 @@
             oneRoadSprite.width = 920;
             oneRoadSprite.height = 1380;
             oneRoadSprite.name = 'road' + i;
+
+            var roadPressBg = new Sprite();
+            roadPressBg.loadImage("res/imgs/g" + (i + 1) + ".png");
+            roadPressBg.x = roadPressBgPosition[i];
+            roadPressBgArr.push(roadPressBg);
+            roadPressBg.visible = false;
+            oneRoadSprite.addChild(roadPressBg);
 
             var pressBg = new Sprite();
             pressBg.loadImage("res/imgs/pressBg.png");
@@ -179,11 +187,11 @@
         letterNum++;
 
         if (letterNum == 4) {
-            console.log('加速了');
+//            console.log('加速了');
             timeoutDelay = 1000;
             letterV = 2800;
         } else if (letterNum == 20) {
-            console.log('又加速了');
+//            console.log('又加速了');
             timeoutDelay = 500;
             letterV = 2500;
         }
@@ -249,6 +257,16 @@
         Laya.stage.on(Event.KEY_DOWN, this, function (e) {
             _this.onKeyDown(e);
         });
+
+        Laya.stage.on(Event.KEY_UP, this, function (e) {
+            _this.onKeyUp(e);
+        });
+    }
+
+    _proto.onKeyUp = function (e) {
+        for(var i in roadPressBgArr) {
+            roadPressBgArr[i].visible = false;
+        }
     }
 
     _proto.onKeyDown = function (e) {
@@ -258,6 +276,9 @@
         for (var i = 0; i < screenLetterBoxArr.length; i++) {
             letter = screenLetterBoxArr[i];
             if (letter.wordObj.letter == keyDownLetter && letter.isOver == false) {
+
+                roadPressBgArr[letter.guidao].visible = true;
+
                 if (letter.y < 980) {
                     _this.onKeyDownLetter(letter, false);
                     break;

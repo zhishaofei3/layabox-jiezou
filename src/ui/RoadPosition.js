@@ -91,4 +91,6 @@ var roadPressPosition = [
         scaleX: 0.86,
         scaleY: 0.79
     }
-]
+];
+
+var roadPressBgPosition = [-8, 232, 470, 579];
