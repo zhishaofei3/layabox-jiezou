@@ -5,9 +5,10 @@
     var HTMLDivElement = Laya.HTMLDivElement;
 
     var bottomBgPanel;//分数区容器
+    var bottomHTMLTxt;//底部输出文字容器
 
-    var beforeTxt;
-    var bottomHTMLTxt;
+    var htmlStr;
+    var isEndTime = false;//是否结束时间
 
     var hasUnderLineAtLast = false;
 
@@ -30,14 +31,16 @@
     _proto.underLineTimer = function () {
         var _this = this;
         hasUnderLineAtLast = !hasUnderLineAtLast;
-        if (_this.letterObjArr) {
-            _this.outputLetterArr(_this.letterObjArr, _this.positionIJ);
-        } else {
-            var htmlStr = '';
-            if (hasUnderLineAtLast) {
-                htmlStr = '<span style="color: #00F8B0;">▌</span>';
+        if(!isEndTime) {
+            if (_this.letterObjArr) {
+                _this.outputLetterArr(_this.letterObjArr, _this.positionIJ);
+            } else {
+                var htmlStr = '';
+                if (hasUnderLineAtLast) {
+                    htmlStr = '<span style="color: #00F8B0;">▌</span>';
+                }
+                bottomHTMLTxt.innerHTML = htmlStr;
             }
-            bottomHTMLTxt.innerHTML = htmlStr;
         }
     }
 
@@ -77,7 +80,7 @@
 
     _proto.outputLetterArr = function (letterObjArr, positionIJ) {
         var _this = this;
-        var htmlStr = '';
+        htmlStr = '';
         if (!positionIJ) {
             return;
         }
@@ -116,7 +119,36 @@
             htmlStr += '<span style="color: #00F8B0;">▌</span>';
         }
         bottomHTMLTxt.innerHTML = htmlStr;
-
     }
 
+    _proto.endPrint = function (obj, letterTotal) {
+        var _this = this;
+
+        var zhengquelv = ((obj.fantastic + obj.perfect + obj.good) / letterTotal * 100);
+        if(zhengquelv != 0) {
+            zhengquelv = zhengquelv.toFixed(2);
+        }
+
+        isEndTime = true;
+        htmlStr = htmlStr.replace('<span style="color: #00F8B0;">▌</span>', '');
+        var temp = htmlStr;
+        var index = 0;
+        var timeoutId = setInterval(printLine, 600);
+        var printArr = [
+            '代码开始执行......',
+            '代码正确率为' + zhengquelv + '%'
+        ];
+        function printLine() {
+            var brIndex = temp.indexOf('<br/>') + 5;
+            temp = temp.slice(brIndex);
+            temp += '<br/>';
+            temp += '<span style="color: #00F8B0">' + printArr[index] + '</span>'
+
+            bottomHTMLTxt.innerHTML = temp;
+            index++;
+            if(index == printArr.length) {
+                clearInterval(timeoutId);
+            }
+        }
+    }
 })();

@@ -154,7 +154,7 @@
                 imgContainer.addChild(menuBtn);
                 Tween.to(menuBtn, {scaleX: 1}, 200);
 
-                if(scoreObj.perfect / letterTotal > 0.75) {
+                if((scoreObj.fantastic + scoreObj.perfect) / letterTotal > 0.75) {
                     var guoguan = new Sprite();
                     guoguan.loadImage("res/imgs/guoguan.png");
                     guoguan.pivot(0, 96);

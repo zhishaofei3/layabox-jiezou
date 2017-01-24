@@ -167,6 +167,9 @@
     }
 
     _proto.countComboTotalScore = function () {
+        if(scoreObj.comboMax > 0) {
+            scoreObj.comboMax--;
+        }
         scoreObj.totalScore += scoreObj.comboMax * 10;
         scoreTxt.text = scoreObj.totalScore.toString();
     }
