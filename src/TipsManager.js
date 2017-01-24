@@ -166,6 +166,11 @@
         return scoreObj;
     }
 
+    _proto.countComboTotalScore = function () {
+        scoreObj.totalScore += scoreObj.comboMax * 10;
+        scoreTxt.text = scoreObj.totalScore.toString();
+    }
+
     _proto.showCombo = function (num) {
         var handler = new Handler(lastTip, function () {
             Tween.to(comboTip, {alpha: 0, scaleX: 1.5, scaleY: 1.5, y: 600}, 100, null, null, 250);
@@ -186,7 +191,6 @@
 
         Tween.to(comboTip, {alpha: 1, scaleX: 0.8, scaleY: 0.8}, 50, null, handler, 120);
     }
-
 
     _proto.showPlayTip = function (addScore) {
         var _this = this;

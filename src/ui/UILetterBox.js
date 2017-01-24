@@ -26,8 +26,6 @@
         this.addBgRect();
 
         this.moveTween = null;//移动缓动
-        this.alphaTween = null;//出现缓动
-
 
         Laya.loader.load("res/parts/lizi2.part", Handler.create(this, onAssetsLoaded), null, Loader.JSON);
     }
@@ -102,11 +100,7 @@
     _proto.pipei = function (score) {
         var _this = this;
 
-//        console.log(_this.wordObj);
         _this.wordObj.status = 1;
-
-//        console.log('有y ' + this.y);
-//        console.log('字母' + this.wordObj.letter + ' 得分' + score);
 
         var ani = new Animation();
         ani.loadAtlas('res/mc/assets.json'); // 加载图集动画

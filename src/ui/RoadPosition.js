@@ -1,7 +1,7 @@
 var fourRoadPosition = [
     {
         start: {
-            x: 228,
+            x: 227,
             y: -20,
             skewX: -8,
             scaleX: 0.6,
@@ -9,7 +9,7 @@ var fourRoadPosition = [
             alpha: 0
         },
         end: {
-            x: -43,
+            x: -44,
             y: 1300,
             scaleX: 1.2,
             scaleY: 1.2,
@@ -31,7 +31,7 @@ var fourRoadPosition = [
         }
     }, {
         start: {
-            x: 435,
+            x: 437,
             y: -20,
             skewX: 2,
             scaleX: 0.57,
@@ -54,7 +54,7 @@ var fourRoadPosition = [
             alpha: 0
         },
         end: {
-            x: 655,
+            x: 665,
             y: 1300,
             scaleX: 1.2,
             scaleY: 1.2

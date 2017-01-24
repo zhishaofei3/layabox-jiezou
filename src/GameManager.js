@@ -106,13 +106,14 @@
 
     _proto.startGame = function () {
         var _this = this;
-//        _this.playMusic();
+        _this.playMusic();
         _this.startWordArr();
         bottomManager.startGame();
     }
 
     _proto.endGame = function () {
         var _this = this;
+        tipsManager.countComboTotalScore();
         var obj = tipsManager.getScore();
         endManager.showEndPanel(obj, letterTotal);
         bottomManager.endPrint(obj, letterTotal);

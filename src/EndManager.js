@@ -46,6 +46,10 @@
     _proto.showEndPanel = function (scoreObj, letterTotal) {
         var _this = this;
 
+        if(scoreObj.comboMax > 0) {
+            scoreObj.comboMax--;
+        }
+
         var rank = _this.saveAndGetRank(scoreObj.totalScore);
         var rankStr = _this.getRankStr(rank);
 
