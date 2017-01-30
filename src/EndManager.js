@@ -33,10 +33,11 @@
         endContainer.addChild(bgCon);
 
         imgContainer = new Sprite();
-        imgContainer.loadImage("res/imgs/endPanel.png");
+//        imgContainer.loadImage("res/imgs/endPanel.png");
+        imgContainer.loadImage("res/imgs/end-app_02.png");
         imgContainer.pivot(438, 689);
-        imgContainer.x = 545;
-        imgContainer.y = 915;
+        imgContainer.x = 525;
+        imgContainer.y = 935;
         endContainer.addChild(imgContainer);
 
         endContainer.visible = false;
@@ -46,9 +47,24 @@
     _proto.showEndPanel = function (scoreObj, letterTotal) {
         var _this = this;
 
-        if(scoreObj.comboMax > 0) {
-            scoreObj.comboMax--;
-        }
+        var neiyuan = new Sprite();
+        neiyuan.loadImage("res/imgs/neiyuan.png");
+        neiyuan.pivot(97, 97);
+        neiyuan.x = 570;
+        neiyuan.y = 475;
+        endContainer.addChild(neiyuan);
+
+        var waiyuan = new Sprite();
+        waiyuan.loadImage("res/imgs/waiyuan.png");
+        waiyuan.pivot(176, 154);
+        waiyuan.x = 569;
+        waiyuan.y = 475;
+        endContainer.addChild(waiyuan);
+
+        var intervalId = setInterval(function () {
+            neiyuan.rotation+=2;
+            waiyuan.rotation--;
+        }, 20);
 
         var rank = _this.saveAndGetRank(scoreObj.totalScore);
         var rankStr = _this.getRankStr(rank);
@@ -60,8 +76,8 @@
         rankTxt.style.color = '#0EAB77';
         rankTxt.style.lineHeight = 60;
         rankTxt.style.align = 'center';
-        rankTxt.x = 385;
-        rankTxt.y = 220;
+        rankTxt.x = 410;
+        rankTxt.y = 180;
         rankTxt.innerHTML = rankStr;
         imgContainer.addChild(rankTxt);
 
@@ -86,7 +102,7 @@
             nameTf.color = '#0EAB77';
             nameTf.italic = true;
             nameTf.overflow = 'hidden';
-            nameTf.x = 145;
+            nameTf.x = 155;
             nameTf.text = txt;
             nameTf.visible = false;
             imgContainer.addChild(nameTf);
@@ -103,7 +119,7 @@
                 scoreHtml.style.lineHeight = 40;
                 scoreHtml.style.italic = true;
                 scoreHtml.style.align = 'right';
-                scoreHtml.x = 540;
+                scoreHtml.x = 550;
                 scoreHtml.innerHTML = (scoreObj[name]).toString();
                 scoreHtml.visible = false;
                 nameTf.width = 600 - scoreHtml.contextWidth - 5;
@@ -124,7 +140,7 @@
             for (var k = 0; k < currShowArr.length; k++) {
                 var lineArr = currShowArr[k];
                 for (var n in lineArr) {
-                    lineArr[n].y = 950 - k * 100;
+                    lineArr[n].y = 934 - k * 100;
                     lineArr[n].visible = true;
                 }
             }
@@ -135,7 +151,7 @@
                 menuBtn = new Sprite();
                 menuBtn.loadImage("res/imgs/menu-btn.png");
                 menuBtn.pivot(321, 51);
-                menuBtn.x = 446;
+                menuBtn.x = 456;
                 menuBtn.y = 1150;
                 menuBtn.scaleX = 0;
                 menuBtn.mouseEnabled = true;

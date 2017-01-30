@@ -4,6 +4,8 @@
     var WebGL = Laya.WebGL;
     var Loader = Laya.Loader;
     var Stat = Laya.Stat;
+    var Sprite = Laya.Sprite;
+    var Event = Laya.Event;
 
     (function () {
 //        Laya.init(Browser.clientWidth, Browser.clientHeight, WebGL);
