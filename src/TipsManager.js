@@ -139,8 +139,6 @@
         scoreTxt.align = 'center';
         scoreTxt.text = scoreObj.totalScore.toString();
         _this.addChild(scoreTxt);
-
-        _this.setCountDown();
     }
 
     _proto.setCountDown = function () {
@@ -255,11 +253,6 @@
     _proto.readyGO = function () {
         var _this = this;
 
-        setTimeout(function () {
-            _this.event("Start_Game_Event");
-        }, 0);
-        return;
-
         var timeLine = new TimeLine();
         timeLine.addLabel("readyIn", 0).to(readyTip, {scaleX: 1, scaleY: 1, alpha: 1}, 500, null, 0)
             .addLabel("readyOut", 0).to(readyTip, {scaleX: 5, scaleY: 5, alpha: 0}, 200, null, 0)
@@ -281,6 +274,7 @@
         function onComplete() {
             timeLine.destroy();
             goTip.alpha = 0;
+            _this.setCountDown();
             _this.event("Start_Game_Event");
         }
     }

@@ -119,7 +119,7 @@
                 scoreHtml.style.lineHeight = 40;
                 scoreHtml.style.italic = true;
                 scoreHtml.style.align = 'right';
-                scoreHtml.x = 550;
+                scoreHtml.x = 590;
                 scoreHtml.innerHTML = (scoreObj[name]).toString();
                 scoreHtml.visible = false;
                 nameTf.width = 600 - scoreHtml.contextWidth - 5;
@@ -140,7 +140,12 @@
             for (var k = 0; k < currShowArr.length; k++) {
                 var lineArr = currShowArr[k];
                 for (var n in lineArr) {
-                    lineArr[n].y = 934 - k * 100;
+
+                    lineArr[n].y = 930 - k * 100;
+                    if(index + 1 == scoreTxtArr.length && k == 0) {
+                        lineArr[n].y = 930 - k * 100 + 30;
+                    }
+
                     lineArr[n].visible = true;
                 }
             }
@@ -151,7 +156,7 @@
                 menuBtn = new Sprite();
                 menuBtn.loadImage("res/imgs/menu-btn.png");
                 menuBtn.pivot(321, 51);
-                menuBtn.x = 456;
+                menuBtn.x = 470;
                 menuBtn.y = 1150;
                 menuBtn.scaleX = 0;
                 menuBtn.mouseEnabled = true;
